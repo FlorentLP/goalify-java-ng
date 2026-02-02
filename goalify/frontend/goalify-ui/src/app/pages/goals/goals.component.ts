@@ -91,29 +91,29 @@ export class GoalsComponent implements OnInit {
   }
 
   getGoalImageUrl(goal: GoalResponse): string {
-    // Placeholder until you add image URL to the backend
+    // Placeholder with pastel category colors
     const base = 'https://placehold.co/400x240';
     const colors: Record<string, string> = {
-      HEALTH: '22c55e/white',
-      SOCIAL: '3b82f6/white',
-      INTELLECT: '8b5cf6/white',
-      AESTHETIC: 'ec4899/white',
-      MINDSET: 'f59e0b/white',
-      OTHER: '6366f1/white'
+      HEALTH: 'b8c9ac/ffffff',
+      SOCIAL: 'a8b8c8/ffffff',
+      INTELLECT: 'c4b8d4/ffffff',
+      AESTHETIC: 'e0b8b8/ffffff',
+      MINDSET: 'e0b8a8/ffffff',
+      OTHER: 'c4b8a8/ffffff'
     };
-    const color = colors[goal.goalCategory] ?? '6366f1/white';
+    const color = colors[goal.goalCategory] ?? 'c4b8a8/ffffff';
     return `${base}/${color}?text=${encodeURIComponent(goal.name)}`;
   }
 
-  /** Couleur du rond de priorité : 5 = haute (rouge) → 1 = basse (gris). */
+  /** Pastel priority badge: 1 = lowest (sage) → 5 = highest (rose). */
   getPriorityColorClass(priority: number): string {
     const classes: Record<number, string> = {
-      1: 'bg-gray-400',
-      2: 'bg-indigo-500',
-      3: 'bg-amber-500',
-      4: 'bg-orange-500',
-      5: 'bg-red-500'
+      1: 'bg-sage-soft text-ink-strong',
+      2: 'bg-lilac-soft text-ink-strong',
+      3: 'bg-peach-soft text-ink-strong',
+      4: 'bg-peach text-ink-strong',
+      5: 'bg-rose text-ink-strong'
     };
-    return classes[priority] ?? 'bg-gray-400';
+    return classes[priority] ?? 'bg-sage-soft text-ink-strong';
   }
 }

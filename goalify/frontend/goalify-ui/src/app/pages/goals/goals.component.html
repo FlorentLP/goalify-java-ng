@@ -1,63 +1,65 @@
-<div class="p-6 flex flex-col gap-4 h-screen">
-    <div class="flex flex-wrap items-center justify-between gap-4">
-      <div class="flex flex-wrap gap-2">
-        <button type="button" (click)="setFilter('TODO')" class="px-3 py-1.5 rounded-lg text-sm font-medium transition"
-          [class.bg-gray-200]="filterStatus() === 'TODO'" [class.text-gray-700]="filterStatus() === 'TODO'"
-          [class.bg-gray-100]="filterStatus() !== 'TODO'" [class.text-gray-600]="filterStatus() !== 'TODO'">
-          To do
-        </button>
-        <button type="button" (click)="setFilter('ONGOING')" class="px-3 py-1.5 rounded-lg text-sm font-medium transition"
-          [class.bg-gray-200]="filterStatus() === 'ONGOING'" [class.text-gray-700]="filterStatus() === 'ONGOING'"
-          [class.bg-gray-100]="filterStatus() !== 'ONGOING'" [class.text-gray-600]="filterStatus() !== 'ONGOING'">
-          Ongoing
-        </button>
-        <button type="button" (click)="setFilter('MAINTENANCE')" class="px-3 py-1.5 rounded-lg text-sm font-medium transition"
-          [class.bg-gray-200]="filterStatus() === 'MAINTENANCE'" [class.text-gray-700]="filterStatus() === 'MAINTENANCE'"
-          [class.bg-gray-100]="filterStatus() !== 'MAINTENANCE'" [class.text-gray-600]="filterStatus() !== 'MAINTENANCE'">
-          Maintenance
-        </button>
-        <button type="button" (click)="setFilter('DONE')" class="px-3 py-1.5 rounded-lg text-sm font-medium transition"
-          [class.bg-gray-200]="filterStatus() === 'DONE'" [class.text-gray-700]="filterStatus() === 'DONE'"
-          [class.bg-gray-100]="filterStatus() !== 'DONE'" [class.text-gray-600]="filterStatus() !== 'DONE'">
-          Done
-        </button>
-      </div>
-    </div>
-  
-    @if (error()) {
-      <div class="rounded-lg bg-red-50 border border-red-200 text-red-800 px-4 py-3">{{ error() }}</div>
-    }
-  
-    @if (loading()) {
-      <p class="text-gray-500">Loading...</p>
-    } @else if (goals().length === 0) {
-      <p class="text-gray-500">No goals yet</p>
-    } @else {
-      <ul class="grid gap-4 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
-        @for (goal of goals(); track goal.id) {
-          <li>
-            <button type="button" (click)="openEditModal(goal)" class="w-full text-left rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden hover:shadow-md hover:border-indigo-200 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-              <div class="aspect-4/3 bg-linear-to-br from-indigo-100 to-purple-100 flex items-center justify-center relative">
-                <img [src]="getGoalImageUrl(goal)" alt="" class="w-full h-full object-cover" />
-                <span
-                  class="absolute top-2 right-2 size-6 rounded-full flex items-center justify-center text-white text-xs font-semibold shadow-md"
-                  [class]="getPriorityColorClass(goal.priority)">
-                  {{ goal.priority }}
-                </span>
-              </div>
-              <div class="p-3">
-                <h2 class="font-medium text-gray-900 truncate">{{ goal.name }}</h2>
-              </div>
-            </button>
-          </li>
-        }
-      </ul>
-    }
-  
-    <button type="button" class="fixed bottom-6 right-6 size-14 rounded-full bg-indigo-600 text-white shadow-lg hover:bg-indigo-700 flex items-center justify-center" aria-label="Add a goal" (click)="openCreateModal()">
-      <span class="text-2xl">+</span>
+<div class="flex flex-col gap-8 h-full">
+  <div class="flex flex-wrap items-center gap-2">
+    <button type="button" (click)="setFilter('TODO')" class="px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200"
+      [class.bg-lilac-soft]="filterStatus() === 'TODO'" [class.text-ink-strong]="filterStatus() === 'TODO'"
+      [class.bg-surface-alt]="filterStatus() !== 'TODO'" [class.text-muted]="filterStatus() !== 'TODO'"
+      [class.hover:bg-lilac-soft/70]="filterStatus() !== 'TODO'">
+      To do
+    </button>
+    <button type="button" (click)="setFilter('ONGOING')" class="px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200"
+      [class.bg-lilac-soft]="filterStatus() === 'ONGOING'" [class.text-ink-strong]="filterStatus() === 'ONGOING'"
+      [class.bg-surface-alt]="filterStatus() !== 'ONGOING'" [class.text-muted]="filterStatus() !== 'ONGOING'"
+      [class.hover:bg-lilac-soft/70]="filterStatus() !== 'ONGOING'">
+      Ongoing
+    </button>
+    <button type="button" (click)="setFilter('MAINTENANCE')" class="px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200"
+      [class.bg-lilac-soft]="filterStatus() === 'MAINTENANCE'" [class.text-ink-strong]="filterStatus() === 'MAINTENANCE'"
+      [class.bg-surface-alt]="filterStatus() !== 'MAINTENANCE'" [class.text-muted]="filterStatus() !== 'MAINTENANCE'"
+      [class.hover:bg-lilac-soft/70]="filterStatus() !== 'MAINTENANCE'">
+      Maintenance
+    </button>
+    <button type="button" (click)="setFilter('DONE')" class="px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200"
+      [class.bg-lilac-soft]="filterStatus() === 'DONE'" [class.text-ink-strong]="filterStatus() === 'DONE'"
+      [class.bg-surface-alt]="filterStatus() !== 'DONE'" [class.text-muted]="filterStatus() !== 'DONE'"
+      [class.hover:bg-lilac-soft/70]="filterStatus() !== 'DONE'">
+      Done
     </button>
   </div>
+
+  @if (error()) {
+    <div class="rounded-xl border border-border bg-surface-alt text-ink px-4 py-3 text-sm">{{ error() }}</div>
+  }
+
+  @if (loading()) {
+    <p class="text-muted text-[15px]">Loading...</p>
+  } @else if (goals().length === 0) {
+    <p class="text-muted text-[15px]">No goals yet</p>
+  } @else {
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      @for (goal of goals(); track goal.id) {
+        <li>
+          <button type="button" (click)="openEditModal(goal)" class="w-full text-left rounded-2xl border border-border bg-surface-alt overflow-hidden transition-all duration-200 hover:border-peach-soft hover:shadow-warm-md focus:outline-none focus:ring-2 focus:ring-sage-soft focus:ring-offset-2 focus:ring-offset-surface shadow-warm">
+            <div class="aspect-4/3 bg-gradient-to-br from-lilac-soft/70 to-sage-soft/60 flex items-center justify-center relative">
+              <img [src]="getGoalImageUrl(goal)" alt="" class="w-full h-full object-cover" />
+              <span
+                class="absolute top-3 right-3 size-7 rounded-full flex items-center justify-center text-xs font-medium shadow-sm"
+                [class]="getPriorityColorClass(goal.priority)">
+                {{ goal.priority }}
+              </span>
+            </div>
+            <div class="p-4">
+              <h2 class="font-medium text-ink-strong truncate text-[15px]">{{ goal.name }}</h2>
+            </div>
+          </button>
+        </li>
+      }
+    </ul>
+  }
+
+  <button type="button" class="fixed bottom-8 right-8 size-14 rounded-2xl bg-peach text-white flex items-center justify-center transition-all duration-200 hover:bg-peach-soft focus:outline-none focus:ring-2 focus:ring-peach focus:ring-offset-2 focus:ring-offset-surface shadow-warm-md" aria-label="Add a goal" (click)="openCreateModal()">
+    <span class="text-2xl font-light leading-none">+</span>
+  </button>
+</div>
   
   @if (modalOpen()) {
     <app-goal-form-modal

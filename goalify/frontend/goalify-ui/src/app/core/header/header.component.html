@@ -1,12 +1,12 @@
-<header class="flex items-center justify-between px-4 py-3 border-b bg-white shrink-0">
-<div class="flex items-center gap-3">
-    <img src="/logoGoalify.png" alt="Logo" class="h-8 w-8" />
-    <span class="font-semibold text-xl">Goalify</span>
-</div>
-<div class="flex items-center gap-2">
-    <span class="text-sm">{{ auth.getStoredUserName() || 'User' }}</span>
-    <div class="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center text-sm">
-    FL
+<header class="flex items-center justify-between px-5 py-4 border-b border-border bg-surface-alt shrink-0 shadow-warm">
+  <div class="flex items-center gap-3">
+    <img src="/logoGoalify.png" alt="Logo" class="h-8 w-8 rounded-lg object-contain" />
+    <span class="font-semibold text-lg tracking-tight text-ink-strong">Goalify</span>
+  </div>
+  <div class="flex items-center gap-3">
+    <span class="text-sm text-ink hidden sm:inline">{{ auth.getStoredUserName() || 'User' }}</span>
+    <div class="h-9 w-9 rounded-full bg-blush flex items-center justify-center text-sm font-medium text-ink-strong ring-2 ring-white/50">
+      FL
     </div>
-</div>
+  </div>
 </header>

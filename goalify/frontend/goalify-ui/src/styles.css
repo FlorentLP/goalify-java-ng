@@ -1,2 +1,47 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+
+@theme {
+  /* Warmer palette: honey cream, sand, camel */
+  --color-surface: #f8f5ef;
+  --color-surface-alt: #f0e9df;
+  --color-border: #e2d9cc;
+  --color-muted: #847a6e;
+  --color-ink: #453d36;
+  --color-ink-strong: #352e28;
+  /* Warm sage */
+  --color-sage: #7d9a6e;
+  --color-sage-soft: #b8c9ac;
+  /* Warm lavender / dusty violet */
+  --color-lilac: #a898c4;
+  --color-lilac-soft: #e2d8ec;
+  /* Richer peach (CTAs, FAB) */
+  --color-peach: #c99078;
+  --color-peach-soft: #e0b8a8;
+  /* Blush */
+  --color-blush: #e0b8b8;
+  /* Soft rose */
+  --color-rose: #c89090;
+  --color-sky: #a8b8c8;
+  --color-accent: #c99078;
+  --color-accent-soft: #e0b8a8;
+  /* Warm shadow for cards */
+  --shadow-warm: 0 1px 3px rgba(120, 90, 70, 0.06), 0 4px 12px rgba(120, 90, 70, 0.04);
+  --shadow-warm-md: 0 4px 6px rgba(120, 90, 70, 0.05), 0 10px 24px rgba(120, 90, 70, 0.06);
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Base: warm honey-cream background */
+body {
+  background-color: var(--color-surface);
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+}
+
+/* Warm-tinted shadows for cards and panels */
+.shadow-warm {
+  box-shadow: var(--shadow-warm);
+}
+.shadow-warm-md {
+  box-shadow: var(--shadow-warm-md);
+}

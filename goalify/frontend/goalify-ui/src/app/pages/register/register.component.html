@@ -1,31 +1,31 @@
-<div class="register-box">
-    <h1>Register</h1>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <div>
-        <label for="email">Email</label>
-        <input id="email" type="email" formControlName="email" />
-        @if (form.get('email')?.invalid && form.get('email')?.touched) {
-          <small>Valid email required.</small>
-        }
-      </div>
-      <div>
-        <label for="password">Password</label>
-        <input id="password" type="password" formControlName="password" />
-        @if (form.get('password')?.invalid && form.get('password')?.touched) {
-          <small>At least 6 characters.</small>
-        }
-      </div>
-      <div>
-        <label for="name">Name</label>
-        <input id="name" type="text" formControlName="name" />
-        @if (form.get('name')?.invalid && form.get('name')?.touched) {
-          <small>Name required.</small>
-        }
-      </div>
-      @if (errorMessage) {
-        <p class="error">{{ errorMessage }}</p>
+<div class="max-w-sm mx-auto my-12 px-6 py-10 rounded-2xl border border-border bg-surface-alt shadow-warm border-t-4 border-t-lilac">
+  <h1 class="text-xl font-semibold tracking-tight text-ink-strong mb-6">Register</h1>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-5">
+    <div>
+      <label for="email" class="block text-sm font-medium text-ink mb-1.5">Email</label>
+      <input id="email" type="email" formControlName="email" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink placeholder:text-muted focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" placeholder="you@example.com" />
+      @if (form.get('email')?.invalid && form.get('email')?.touched) {
+        <small class="text-xs text-muted mt-1.5 block">Valid email required.</small>
       }
-      <button type="submit" [disabled]="form.invalid">Register</button>
-    </form>
-    <p><a routerLink="/login">Already have an account? Login</a></p>
-  </div>
+    </div>
+    <div>
+      <label for="password" class="block text-sm font-medium text-ink mb-1.5">Password</label>
+      <input id="password" type="password" formControlName="password" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink placeholder:text-muted focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" placeholder="••••••••" />
+      @if (form.get('password')?.invalid && form.get('password')?.touched) {
+        <small class="text-xs text-muted mt-1.5 block">At least 6 characters.</small>
+      }
+    </div>
+    <div>
+      <label for="name" class="block text-sm font-medium text-ink mb-1.5">Name</label>
+      <input id="name" type="text" formControlName="name" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink placeholder:text-muted focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" placeholder="Your name" />
+      @if (form.get('name')?.invalid && form.get('name')?.touched) {
+        <small class="text-xs text-muted mt-1.5 block">Name required.</small>
+      }
+    </div>
+    @if (errorMessage) {
+      <p class="text-sm text-ink">{{ errorMessage }}</p>
+    }
+    <button type="submit" [disabled]="form.invalid" class="w-full py-2.5 rounded-xl bg-peach text-white font-medium hover:bg-peach-soft disabled:opacity-50 transition-colors duration-200">Register</button>
+  </form>
+  <p class="mt-6 text-sm text-muted"><a routerLink="/login" class="text-ink font-medium hover:text-ink-strong transition-colors">Already have an account? Login</a></p>
+</div>
