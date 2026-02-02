@@ -1,0 +1,76 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" (click)="onBackdropClick()">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto" (click)="$event.stopPropagation()">
+      <div class="px-6 pt-6 flex justify-between">
+        <h2 class="text-xl font-semibold text-gray-900">{{ title }}</h2>
+        <button type="button" (click)="close.emit()" class="shrink-0 w-8 h-8 rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 flex items-center justify-center" aria-label="Close">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+        </button>
+      </div>
+      <form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="p-6 flex flex-col gap-4">
+        @if (error) {
+          <p class="text-sm text-red-600">{{ error }}</p>
+        }
+        <div>
+            <input formControlName="name" type="text" placeholder="Name" class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />          @if (form.get('name')?.invalid && form.get('name')?.touched) {
+            <p class="text-xs text-red-600 mt-1">Name is required</p>
+          }
+        </div>
+        <div>
+          <select formControlName="goalStatus" class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+            @for (s of statuses; track s) {
+              <option [value]="s">{{ s }}</option>
+            }
+          </select>
+        </div>
+        <div>
+          <select formControlName="goalType" class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+            @for (t of types; track t) {
+              <option [value]="t">{{ t }}</option>
+            }
+          </select>
+        </div>
+        <div>
+          <select formControlName="goalCategory" class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+            @for (c of categories; track c) {
+              <option [value]="c">{{ c }}</option>
+            }
+          </select>
+        </div>
+        <div>
+          <input formControlName="priority" type="number" min="1" max="5" placeholder="1–5" class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-indigo-500" />
+          @if (form.get('priority')?.invalid && form.get('priority')?.touched) {
+            <p class="text-xs text-red-600 mt-1">Must be between 1 and 5</p>
+          }
+        </div>
+        <div class="flex flex-wrap gap-3 pt-2">
+            @if (mode === 'create'){
+                <button type="button" (click)="close.emit()" class="flex-1 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
+                    Cancel
+                </button>
+            }
+            @if (mode === 'edit' && goal) {
+                @if (!confirmingDelete) {
+                  <button type="button" (click)="onDeleteClick()" class="py-2 px-4 rounded-lg bg-red-600 text-white hover:bg-red-700">
+                    Delete
+                  </button>
+                } @else {
+                  <div class="flex items-center gap-2">
+                    <span class="text-sm text-gray-600">Delete this goal?</span>
+                    <button type="button" (click)="onConfirmDelete()" class="py-2 px-3 rounded-lg bg-red-600 text-white hover:bg-red-700 text-sm">
+                      Yes
+                    </button>
+                    <button type="button" (click)="onCancelDelete()" class="py-2 px-3 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 text-sm">
+                      No
+                    </button>
+                  </div>
+                }
+              }
+            <button type="submit" [disabled]="form.invalid || submitting" class="flex-1 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50">
+              {{ submitLabel }}
+            </button>
+          </div>
+      </form>
+    </div>
+  </div>

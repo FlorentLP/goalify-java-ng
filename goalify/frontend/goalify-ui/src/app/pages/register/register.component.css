@@ -1,0 +1,22 @@
+.register-box {
+    max-width: 320px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  .register-box h1 { margin-top: 0; }
+  .register-box div { margin-bottom: 1rem; }
+  .register-box label { display: block; margin-bottom: 0.25rem; }
+  .register-box input {
+    width: 100%;
+    padding: 0.5rem;
+    box-sizing: border-box;
+  }
+  .register-box .error { color: #c00; }
+  .register-box button {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    cursor: pointer;
+  }
