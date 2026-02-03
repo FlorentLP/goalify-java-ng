@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { GoalsService } from '../../goals/goals.service';
 import type { GoalResponse, GoalStatus, CreateGoalRequest } from '../../goals/goals.model';
 import { GoalFormModalComponent } from './goal-form-modal/goal-form-modal.component';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-goals',
@@ -12,6 +13,7 @@ import { GoalFormModalComponent } from './goal-form-modal/goal-form-modal.compon
 })
 export class GoalsComponent implements OnInit {
   private goalsService = inject(GoalsService);
+  private sanitizer = inject(DomSanitizer);
 
   goals = signal<GoalResponse[]>([]);
   loading = signal(true);
@@ -90,8 +92,10 @@ export class GoalsComponent implements OnInit {
     });
   }
 
-  getGoalImageUrl(goal: GoalResponse): string {
-    // Placeholder with pastel category colors
+  getGoalImageUrl(goal: GoalResponse): string | SafeResourceUrl {
+    if (goal.image) {
+      return this.sanitizer.bypassSecurityTrustResourceUrl(goal.image);
+    }
     const base = 'https://placehold.co/400x240';
     const colors: Record<string, string> = {
       HEALTH: 'b8c9ac/ffffff',

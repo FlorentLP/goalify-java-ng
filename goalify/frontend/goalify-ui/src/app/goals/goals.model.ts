@@ -11,6 +11,7 @@ export interface GoalResponse {
   goalType: GoalType;
   goalCategory: GoalCategory;
   priority: number;
+  image: string | null;
 }
 
 // Corps des requêtes POST et PUT
@@ -20,4 +21,5 @@ export interface CreateGoalRequest {
   goalType: GoalType;
   goalCategory: GoalCategory;
   priority: number;
+  image: string | null;
 }

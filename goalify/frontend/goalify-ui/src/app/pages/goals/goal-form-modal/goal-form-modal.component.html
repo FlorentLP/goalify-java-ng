@@ -13,6 +13,15 @@
         <p class="text-sm text-ink">{{ error }}</p>
       }
       <div>
+        <input type="file" accept="image/*" (change)="onImageSelected($event)" />
+        @if (imageLoading) {
+          <p class="text-sm text-muted mt-1">Processing image…</p>
+        }
+        @if (form.get('image')?.value; as img) {
+          <img [src]="img" alt="Preview" class="mt-2 max-h-32 w-auto rounded-xl border border-border object-cover" />
+        }
+      </div>
+      <div>
         <input formControlName="name" type="text" placeholder="Name" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink placeholder:text-muted focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" />
         @if (form.get('name')?.invalid && form.get('name')?.touched) {
           <p class="text-xs text-muted mt-1.5">Name is required</p>

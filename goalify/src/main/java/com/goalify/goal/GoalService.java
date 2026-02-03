@@ -37,7 +37,8 @@ public class GoalService {
             request.getGoalStatus(),
             request.getGoalType(),
             request.getGoalCategory(),
-            request.getPriority()
+            request.getPriority(),
+            request.getImage()
         );
 
         goalRepository.save(goal);
@@ -93,6 +94,8 @@ public class GoalService {
         goal.setGoalType(request.getGoalType());
         goal.setGoalCategory(request.getGoalCategory());
         goal.setPriority(request.getPriority());
+        goal.setImage(request.getImage());
+
 
         goalRepository.save(goal);
 

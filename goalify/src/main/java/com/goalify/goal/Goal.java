@@ -59,7 +59,8 @@ public class Goal {
             GoalStatus goalStatus,
             GoalType goalType,
             GoalCategory goalCategory,
-            int priority
+            int priority,
+            String image
     ) {
         this.user = user;
         this.name = name;
@@ -67,6 +68,7 @@ public class Goal {
         this.goalType = goalType;
         this.goalCategory = goalCategory;
         this.priority = priority;
+        this.image = image;
     }
 
     @PrePersist

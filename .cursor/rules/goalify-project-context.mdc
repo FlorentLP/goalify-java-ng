@@ -1,0 +1,105 @@
+---
+description: Goalify full project context — backend, frontend, database
+alwaysApply: true
+---
+
+# Goalify — Project Context
+
+Goalify is a **goal tracker** app: backend (Spring Boot), frontend (Angular), PostgreSQL. Use this rule so prompts have full context.
+
+---
+
+## 1. Repository layout
+
+- **Backend**: `goalify/` (Maven, Java)
+- **Frontend**: `goalify/frontend/goalify-ui/` (Angular)
+- **Config**: `goalify/src/main/resources/application.properties`
+
+---
+
+## 2. Backend (Spring Boot)
+
+- **Stack**: Spring Boot 3.5.x, Java 17, Maven
+- **Dependencies**: Web, Data JPA, Validation, Security, PostgreSQL driver, JJWT 0.12.6, Lombok
+- **Base package**: `com.goalify`
+
+### Packages and roles
+
+| Package       | Role |
+|---------------|------|
+| `com.goalify` | `GoalifyApplication.java` entry point |
+| `com.goalify.user` | `User` entity, `UserRepository` |
+| `com.goalify.auth` | Auth API, JWT filter/util, SecurityConfig, DTOs (Login, Register, AuthResponse) |
+| `com.goalify.goal` | `Goal` entity, enums, `GoalController`, `GoalService`, `GoalRepository`, DTOs |
+
+### Entities
+
+- **User** (`users`): id, email (unique), password, name, image (TEXT), createdAt, updatedAt. One-to-many Goals.
+- **Goal** (`goals`): id, user_id (FK), name, createdAt, updatedAt, goalStatus, goalType, goalCategory, priority (1–5), image (TEXT). Many-to-one User.
+
+### Enums (goal)
+
+- **GoalStatus**: TODO, ONGOING, MAINTENANCE, DONE
+- **GoalType**: LIFETIME, ONETIME
+- **GoalCategory**: HEALTH, SOCIAL, INTELLECT, AESTHETIC, MINDSET, OTHER
+
+### API
+
+- **Auth** (no JWT): `POST /auth/register`, `POST /auth/login`. DTOs: RegisterRequestDto, LoginRequestDto, AuthResponseDto (token, name, etc.).
+- **Goals** (JWT required): `GET /goals` (optional `?status=`), `GET /goals/{id}`, `POST /goals`, `PUT /goals/{id}`, `DELETE /goals/{id}`. Request body: CreateGoalRequestDto (name, goalStatus, goalType, goalCategory, priority). Response: GoalResponseDto (id, name, goalStatus, goalType, goalCategory, priority).
+
+### Conventions
+
+- Controllers return `ResponseEntity<?>`, use `IllegalStateException` for business errors; map to 400/403/404 and `Map.of("message", "...")`.
+- Entities: JPA, Lombok `@Getter`/`Setter`/`@NoArgsConstructor(access = PROTECTED)`, `@PrePersist`/`@PreUpdate` for timestamps.
+- Security: stateless JWT; `/auth/**` and `/error` public; all other requests authenticated. CORS allows `http://localhost:4200`. BCrypt for passwords.
+
+---
+
+## 3. Frontend (Angular)
+
+- **Stack**: Angular 21.x, TypeScript 5.9, Tailwind CSS 4, RxJS 7.8, Vitest
+- **Prefix**: `app`
+- **API base**: `environment.apiUrl` → `http://localhost:8080`
+
+### Structure
+
+- **`app/auth/`**: auth.guard, auth.model (AuthResponse, LoginRequest, RegisterRequest), auth.service (login, register, getToken, isLoggedIn, logout, localStorage token + user name), jwt.interceptor (adds Bearer token).
+- **`app/core/`**: header, sidebar.
+- **`app/goals/`**: goals.model (GoalStatus, GoalType, GoalCategory; GoalResponse; CreateGoalRequest), goals.service (CRUD via HttpClient).
+- **`app/pages/`**: login, register, dashboard, goals (with goal-form-modal).
+- **`app/environment.ts`**: apiUrl.
+- **`app/app.routes.ts`**: `''` → dashboard; login, register public; dashboard, goals protected by `authGuard`.
+
+### Conventions
+
+- Single-quote, printWidth 100 (Prettier).
+- Services: `providedIn: 'root'`, use `environment.apiUrl` and types from `goals.model` / `auth.model`.
+- Enums in TS are string unions matching backend: e.g. `GoalStatus = 'TODO' | 'ONGOING' | 'MAINTENANCE' | 'DONE'`.
+
+---
+
+## 4. Database
+
+- **Engine**: PostgreSQL
+- **Default URL**: `jdbc:postgresql://localhost:5432/goalify_db`
+- **JPA**: `ddl-auto=update`, `show-sql=true`, SQL formatted
+- **Tables**: `users`, `goals` (with user_id FK). Enums stored as STRING.
+
+---
+
+## 5. Aligning backend and frontend
+
+- Keep **GoalStatus**, **GoalType**, **GoalCategory** in sync between Java enums and TS types in `goals.model.ts`.
+- **GoalResponse** fields must match **GoalResponseDto** (id, name, goalStatus, goalType, goalCategory, priority).
+- **CreateGoalRequest** must match **CreateGoalRequestDto** (name, goalStatus, goalType, goalCategory, priority); priority 1–5 on both sides.
+- Auth: frontend stores token and user name in localStorage; backend returns JWT and name in AuthResponseDto.
+
+---
+
+## 6. Running
+
+- Backend: from `goalify/` run `./mvnw spring-boot:run` (or equivalent); expects PostgreSQL and config in `application.properties`.
+- Frontend: from `goalify/frontend/goalify-ui/` run `npm start` (ng serve); default port 4200, CORS allowed from backend.
+
+When adding features (new endpoints, entities, or UI), keep DTOs and TS types aligned and respect existing patterns (JWT for /goals, auth guard on protected routes, error message map on backend).

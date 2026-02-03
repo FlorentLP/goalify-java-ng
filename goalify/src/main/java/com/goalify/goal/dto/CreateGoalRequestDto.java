@@ -30,4 +30,6 @@ public class CreateGoalRequestDto {
     @Min(1)
     @Max(5)
     private int priority;
+
+    private String image;
 }

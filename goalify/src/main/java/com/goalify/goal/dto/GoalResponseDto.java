@@ -25,6 +25,8 @@ public class GoalResponseDto {
     
     private int priority;
 
+    private String image;
+
     public GoalResponseDto(Goal goal){
         this.id = goal.getId();
         this.name = goal.getName();
@@ -32,5 +34,6 @@ public class GoalResponseDto {
         this.goalType = goal.getGoalType();
         this.goalCategory = goal.getGoalCategory();
         this.priority = goal.getPriority();
+        this.image = goal.getImage();
     }
 }

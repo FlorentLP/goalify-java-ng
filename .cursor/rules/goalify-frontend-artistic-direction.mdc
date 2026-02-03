@@ -1,0 +1,92 @@
+---
+description: Goalify frontend — artistic direction (always in context for UI work)
+globs: goalify/frontend/goalify-ui/**/*
+alwaysApply: false
+---
+
+# Goalify Frontend — Artistic Direction
+
+**Afin que** toute modification ou suggestion sur le frontend respecte l’identité visuelle de l’application, garde toujours en contexte la direction artistique ci‑dessous, quel que soit la demande.
+
+---
+
+## 1. Intent
+
+- **Calm, intelligent, softly elegant** mobile-first interface for a personal life-tracking app (goals, habits, activities) — a “personal cockpit”.
+- The app **supports the user quietly, without pressure**. Visual identity must feel **clear, structured, reassuring**, never aggressive or gamified.
+
+---
+
+## 2. Style principles
+
+- **Soft minimalism, warm and human**
+- **Strong visual hierarchy** with generous spacing
+- **Subtle personality through details**, not decoration
+- **No gamification, no emojis, no flashy elements**
+
+---
+
+## 3. Layout & UI
+
+- **Card-based layout** with soft rounded corners (`rounded-xl`, `rounded-2xl`)
+- Strict separation between life domains (goals, habits, media, health)
+- Dashboard acts as a **cockpit**: overview first, details second
+- Prefer **smooth, slow micro-interactions** (e.g. `duration-200`, `duration-300`)
+
+---
+
+## 4. Color palette (Tailwind @theme in `src/styles.css`)
+
+Use **only** these semantic tokens. No raw grays or bright primaries.
+
+| Token | Usage |
+|-------|--------|
+| `surface` | Main background (honey cream) |
+| `surface-alt` | Cards, header, sidebar, inputs background |
+| `border` | Borders |
+| `muted` | Secondary text, placeholders |
+| `ink` / `ink-strong` | Body and heading text |
+| `sage` / `sage-soft` | Focus rings, accents, priority/category |
+| `lilac` / `lilac-soft` | Nav active, filter pills, soft accents |
+| `peach` / `peach-soft` | Primary CTAs, FAB, key actions |
+| `blush` | Avatar, soft highlights |
+| `rose` | High-priority badge |
+| `accent` / `accent-soft` | Alias for peach (buttons) |
+
+- **Background never pure white** — use `surface` or `surface-alt`.
+- **Maximum two accent colors per screen** (e.g. peach + lilac, or sage + peach).
+
+---
+
+## 5. Shadows
+
+- Use **warm-tinted shadows**: classes `shadow-warm` and `shadow-warm-md` (defined in `styles.css`), not generic `shadow-sm`/`shadow-md`.
+- Keeps the overall feel warm and cohesive.
+
+---
+
+## 6. Typography
+
+- **Font**: Inter (already loaded in `index.html`).
+- **High legibility**: slightly expressive titles (`font-semibold`, `tracking-tight`), neutral body text.
+- Prefer `text-ink` / `text-ink-strong` for text, `text-muted` for secondary.
+
+---
+
+## 7. Mood & feeling
+
+- **Calm, clarity, intelligence** — “Everything is under control”
+- **Elegant, thoughtful, mature**
+- References (vibe, not copy): Notion (clarity), GitHub (progress), Apple Health (calm), Letterboxd (tasteful organization)
+
+---
+
+## 8. Conventions when changing UI
+
+- **No logic change** unless explicitly requested: prefer HTML + Tailwind only for visual tweaks.
+- **Do not move** main structure (e.g. sidebar, header, main) unless asked.
+- **New components / pages**: use the same palette (`surface`, `surface-alt`, `border`, `peach`, `lilac-soft`, etc.), same rounded corners, same shadow utilities (`shadow-warm`, `shadow-warm-md`).
+- **Buttons**: primary = `bg-peach` / `hover:bg-peach-soft`; secondary = bordered with `border-border` and `hover:bg-surface-alt` or `hover:bg-peach-soft/40`.
+- **Forms**: inputs with `rounded-xl`, `border-border`, `bg-surface`, focus `focus:ring-sage-soft` / `focus:border-sage-soft`.
+
+When answering or implementing any frontend request, apply this artistic direction by default so the app stays consistent and on-brand.
