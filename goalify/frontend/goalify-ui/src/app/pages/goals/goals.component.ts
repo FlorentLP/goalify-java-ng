@@ -33,7 +33,11 @@ export class GoalsComponent implements OnInit {
     this.error.set(null);
     this.goalsService.getGoals(this.filterStatus()).subscribe({
       next: (list) => {
-        this.goals.set(list);
+        const sorted = [...list].sort((a, b) => {
+          if (b.priority !== a.priority) return b.priority - a.priority;
+          return a.name.localeCompare(b.name);
+        });
+        this.goals.set(sorted);
         this.loading.set(false);
       },
       error: (err) => {

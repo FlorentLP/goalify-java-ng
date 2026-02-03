@@ -1,6 +1,6 @@
 <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink-strong/25 transition-opacity duration-300" (click)="onBackdropClick()">
-  <div class="bg-surface-alt rounded-2xl border border-border w-full max-w-md max-h-[90vh] overflow-y-auto shadow-warm-md transition-all duration-300" (click)="$event.stopPropagation()">
-    <div class="px-6 pt-6 flex justify-between items-start">
+  <div class="bg-surface-alt rounded-2xl border border-border w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-warm-md transition-all duration-300 flex flex-col" (click)="$event.stopPropagation()">
+    <div class="px-6 pt-6 flex justify-between items-start shrink-0">
       <h2 class="text-lg font-semibold tracking-tight text-ink-strong">{{ title }}</h2>
       <button type="button" (click)="close.emit()" class="shrink-0 w-9 h-9 rounded-xl text-muted hover:bg-surface hover:text-ink flex items-center justify-center transition-colors duration-200" aria-label="Close">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
@@ -8,78 +8,105 @@
         </svg>
       </button>
     </div>
-    <form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="p-6 flex flex-col gap-5">
-      @if (error) {
-        <p class="text-sm text-ink">{{ error }}</p>
-      }
-      <div>
-        <input type="file" accept="image/*" (change)="onImageSelected($event)" />
+
+    <form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="flex flex-1 min-h-0">
+      <!-- Hidden file input -->
+      <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)" class="hidden" />
+
+      <!-- Left: image square -->
+      <div
+        (click)="triggerImageClick()"
+        class="shrink-0 w-52 h-52 sm:w-64 sm:h-64 m-4 rounded-2xl border border-border bg-surface overflow-hidden flex items-center justify-center cursor-pointer transition-all duration-200 hover:border-sage-soft hover:shadow-warm focus-within:ring-2 focus-within:ring-sage-soft"
+      >
         @if (imageLoading) {
-          <p class="text-sm text-muted mt-1">Processing image…</p>
-        }
-        @if (form.get('image')?.value; as img) {
-          <img [src]="img" alt="Preview" class="mt-2 max-h-32 w-auto rounded-xl border border-border object-cover" />
-        }
-      </div>
-      <div>
-        <input formControlName="name" type="text" placeholder="Name" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink placeholder:text-muted focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" />
-        @if (form.get('name')?.invalid && form.get('name')?.touched) {
-          <p class="text-xs text-muted mt-1.5">Name is required</p>
+          <p class="text-sm text-muted">Loading...</p>
+        } @else if (form.get('image')?.value; as img) {
+          <img [src]="img" alt="" class="w-full h-full object-cover" />
+        } @else {
+          <span class="text-sm text-muted text-center px-3">Choose a picture</span>
         }
       </div>
-      <div>
-        <select formControlName="goalStatus" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200">
-          @for (s of statuses; track s) {
-            <option [value]="s">{{ s }}</option>
+
+      <!-- Right: form fields -->
+      <div class="flex-1 p-4 flex flex-col gap-5 min-w-0 overflow-y-auto">
+        @if (error) {
+          <p class="text-sm text-ink">{{ error }}</p>
+        }
+        <div>
+          <input formControlName="name" type="text" placeholder="Name" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink placeholder:text-muted focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" />
+          @if (form.get('name')?.invalid && form.get('name')?.touched) {
+            <p class="text-xs text-muted mt-1.5">Name is required</p>
           }
-        </select>
-      </div>
-      <div>
-        <select formControlName="goalType" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200">
-          @for (t of types; track t) {
-            <option [value]="t">{{ t }}</option>
-          }
-        </select>
-      </div>
-      <div>
-        <select formControlName="goalCategory" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200">
-          @for (c of categories; track c) {
-            <option [value]="c">{{ c }}</option>
-          }
-        </select>
-      </div>
-      <div>
-        <input formControlName="priority" type="number" min="1" max="5" placeholder="1–5" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink placeholder:text-muted focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" />
-        @if (form.get('priority')?.invalid && form.get('priority')?.touched) {
-          <p class="text-xs text-muted mt-1.5">Must be between 1 and 5</p>
-        }
-      </div>
-      <div class="flex flex-wrap gap-3 pt-2">
-        @if (mode === 'create'){
-          <button type="button" (click)="close.emit()" class="flex-1 py-2.5 rounded-xl border border-border text-ink font-medium hover:bg-surface transition-colors duration-200">
-            Cancel
-          </button>
-        }
-        @if (mode === 'edit' && goal) {
-          @if (!confirmingDelete) {
-            <button type="button" (click)="onDeleteClick()" class="py-2.5 px-4 rounded-xl border border-border text-ink font-medium hover:bg-surface transition-colors duration-200">
-              Delete
+        </div>
+        <div>
+          <select formControlName="goalStatus" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200">
+            @for (s of statuses; track s) {
+              <option [value]="s">{{ s }}</option>
+            }
+          </select>
+        </div>
+        <div>
+          <select formControlName="goalType" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200">
+            @for (t of types; track t) {
+              <option [value]="t">{{ t }}</option>
+            }
+          </select>
+        </div>
+        <div>
+          <select formControlName="goalCategory" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200">
+            @for (c of categories; track c) {
+              <option [value]="c">{{ c }}</option>
+            }
+          </select>
+        </div>
+        <div>
+          <p class="text-sm text-muted mb-2">Priority</p>
+          <div class="flex gap-2">
+            @for (p of priorityOptions; track p) {
+              <button
+                type="button"
+                (click)="setPriority(p)"
+                class="w-10 h-10 rounded-xl border text-sm font-medium transition-all duration-200 flex items-center justify-center shrink-0"
+                [class.bg-sage]="form.get('priority')?.value === p"
+                [class.text-white]="form.get('priority')?.value === p"
+                [class.border-sage]="form.get('priority')?.value === p"
+                [class.border-border]="form.get('priority')?.value !== p"
+                [class.bg-surface]="form.get('priority')?.value !== p"
+                [class.text-ink]="form.get('priority')?.value !== p"
+                [class.hover:border-sage-soft]="form.get('priority')?.value !== p"
+              >
+                {{ p }}
+              </button>
+            }
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-3 pt-2 mt-auto">
+          @if (mode === 'create'){
+            <button type="button" (click)="close.emit()" class="flex-1 py-2.5 rounded-xl border border-border text-ink font-medium hover:bg-surface transition-colors duration-200">
+              Cancel
             </button>
-          } @else {
-            <div class="flex items-center gap-3">
-              <span class="text-sm text-muted">Delete this goal?</span>
-              <button type="button" (click)="onConfirmDelete()" class="py-2 px-3 rounded-xl border border-border text-ink text-sm font-medium hover:bg-surface">
-                Yes
-              </button>
-              <button type="button" (click)="onCancelDelete()" class="py-2 px-3 rounded-xl border border-border text-ink text-sm font-medium hover:bg-surface">
-                No
-              </button>
-            </div>
           }
-        }
-        <button type="submit" [disabled]="form.invalid || submitting" class="flex-1 py-2.5 rounded-xl bg-peach text-white font-medium hover:bg-peach-soft disabled:opacity-50 transition-colors duration-200">
-          {{ submitLabel }}
-        </button>
+          @if (mode === 'edit' && goal) {
+            @if (!confirmingDelete) {
+              <button type="button" (click)="onDeleteClick()" class="py-2.5 px-4 rounded-xl border border-border text-ink font-medium hover:bg-surface transition-colors duration-200">
+                Delete
+              </button>
+            } @else {
+              <div class="flex items-center gap-3">
+                <span class="text-sm text-muted">Delete this goal?</span>
+                <button type="button" (click)="onConfirmDelete()" class="py-2 px-3 rounded-xl border border-border text-ink text-sm font-medium hover:bg-surface">
+                  Yes
+                </button>
+                <button type="button" (click)="onCancelDelete()" class="py-2 px-3 rounded-xl border border-border text-ink text-sm font-medium hover:bg-surface">
+                  No
+                </button>
+              </div>
+            }
+          }
+          <button type="submit" [disabled]="form.invalid || submitting || imageLoading" class="flex-1 py-2.5 rounded-xl bg-peach text-white font-medium hover:bg-peach-soft disabled:opacity-50 transition-colors duration-200">
+            {{ submitLabel }}
+          </button>
+        </div>
       </div>
     </form>
   </div>

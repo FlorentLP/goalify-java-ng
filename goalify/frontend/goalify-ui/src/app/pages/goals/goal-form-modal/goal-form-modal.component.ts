@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ChangeDetectorRef, EventEmitter, Input, Output, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import type { CreateGoalRequest, GoalResponse, GoalStatus, GoalType, GoalCategory } from '../../../goals/goals.model';
 
@@ -12,6 +12,7 @@ import type { CreateGoalRequest, GoalResponse, GoalStatus, GoalType, GoalCategor
 export class GoalFormModalComponent {
   @Input() mode: 'create' | 'edit' = 'create';
   @Input() goal: GoalResponse | null = null;
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   @Output() close = new EventEmitter<void>();
   @Output() saved = new EventEmitter<GoalResponse>();
@@ -26,6 +27,7 @@ export class GoalFormModalComponent {
   readonly statuses: GoalStatus[] = ['TODO', 'ONGOING', 'MAINTENANCE', 'DONE'];
   readonly types: GoalType[] = ['LIFETIME', 'ONETIME'];
   readonly categories: GoalCategory[] = ['HEALTH', 'SOCIAL', 'INTELLECT', 'AESTHETIC', 'MINDSET', 'OTHER'];
+  readonly priorityOptions = [1, 2, 3, 4, 5] as const;
 
   constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef
   ) {
@@ -98,6 +100,14 @@ export class GoalFormModalComponent {
 
   onBackdropClick(): void {
     this.close.emit();
+  }
+
+  triggerImageClick(): void {
+    this.fileInput?.nativeElement?.click();
+  }
+
+  setPriority(value: number): void {
+    this.form.patchValue({ priority: value });
   }
 
   onFormSubmit(): void {
