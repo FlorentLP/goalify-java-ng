@@ -113,15 +113,4 @@ export class GoalsComponent implements OnInit {
     return `${base}/${color}?text=${encodeURIComponent(goal.name)}`;
   }
 
-  /** Pastel priority badge: 1 = lowest (sage) → 5 = highest (rose). */
-  getPriorityColorClass(priority: number): string {
-    const classes: Record<number, string> = {
-      1: 'bg-sage-soft text-ink-strong',
-      2: 'bg-lilac-soft text-ink-strong',
-      3: 'bg-peach-soft text-ink-strong',
-      4: 'bg-peach text-ink-strong',
-      5: 'bg-rose text-ink-strong'
-    };
-    return classes[priority] ?? 'bg-sage-soft text-ink-strong';
-  }
 }

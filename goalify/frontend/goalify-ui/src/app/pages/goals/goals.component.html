@@ -42,8 +42,19 @@
             <div class="aspect-4/3 bg-gradient-to-br from-lilac-soft/70 to-sage-soft/60 flex items-center justify-center relative">
               <img [src]="getGoalImageUrl(goal)" alt="" class="w-full h-full object-cover" />
               <span
-                class="absolute top-3 right-3 size-7 rounded-full flex items-center justify-center text-xs font-medium shadow-sm"
-                [class]="getPriorityColorClass(goal.priority)">
+                class="absolute top-3 right-3 size-7 rounded-full flex items-center justify-center text-xs font-medium shadow-sm border"
+                [class.bg-green-500]="goal.priority === 1"
+                [class.border-green-500]="goal.priority === 1"
+                [class.bg-lime-400]="goal.priority === 2"
+                [class.border-lime-400]="goal.priority === 2"
+                [class.bg-yellow-400]="goal.priority === 3"
+                [class.border-yellow-400]="goal.priority === 3"
+                [class.bg-orange-500]="goal.priority === 4"
+                [class.border-orange-500]="goal.priority === 4"
+                [class.bg-red-500]="goal.priority === 5"
+                [class.border-red-500]="goal.priority === 5"
+                [class.text-white]="goal.priority === 1 || goal.priority === 4 || goal.priority === 5"
+                [class.text-ink-strong]="goal.priority === 2 || goal.priority === 3">
                 {{ goal.priority }}
               </span>
             </div>

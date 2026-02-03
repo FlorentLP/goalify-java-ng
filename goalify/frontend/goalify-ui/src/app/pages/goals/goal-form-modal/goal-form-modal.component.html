@@ -61,15 +61,24 @@
         </div>
         <div>
           <p class="text-sm text-muted mb-2">Priority</p>
-          <div class="flex gap-2">
+          <div class="flex w-full gap-2">
             @for (p of priorityOptions; track p) {
               <button
                 type="button"
                 (click)="setPriority(p)"
-                class="w-10 h-10 rounded-xl border text-sm font-medium transition-all duration-200 flex items-center justify-center shrink-0"
-                [class.bg-sage]="form.get('priority')?.value === p"
-                [class.text-white]="form.get('priority')?.value === p"
-                [class.border-sage]="form.get('priority')?.value === p"
+                class="flex-1 min-w-0 h-10 rounded-xl first:rounded-l-xl last:rounded-r-xl border text-sm font-medium transition-all duration-200 flex items-center justify-center -mr-px last:mr-0"
+                [class.bg-green-500]="form.get('priority')?.value === p && p === 1"
+                [class.border-green-500]="form.get('priority')?.value === p && p === 1"
+                [class.text-white]="form.get('priority')?.value === p && (p === 1 || p === 4 || p === 5)"
+                [class.bg-lime-400]="form.get('priority')?.value === p && p === 2"
+                [class.border-lime-400]="form.get('priority')?.value === p && p === 2"
+                [class.bg-yellow-400]="form.get('priority')?.value === p && p === 3"
+                [class.border-yellow-400]="form.get('priority')?.value === p && p === 3"
+                [class.bg-orange-500]="form.get('priority')?.value === p && p === 4"
+                [class.border-orange-500]="form.get('priority')?.value === p && p === 4"
+                [class.bg-red-500]="form.get('priority')?.value === p && p === 5"
+                [class.border-red-500]="form.get('priority')?.value === p && p === 5"
+                [class.text-ink-strong]="form.get('priority')?.value === p && (p === 2 || p === 3)"
                 [class.border-border]="form.get('priority')?.value !== p"
                 [class.bg-surface]="form.get('priority')?.value !== p"
                 [class.text-ink]="form.get('priority')?.value !== p"
