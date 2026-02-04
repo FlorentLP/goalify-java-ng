@@ -11,112 +11,124 @@
 
     <form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="flex flex-1 min-h-0">
       <!-- Hidden file input -->
-      <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)" class="hidden" />
-
-      <!-- Left: image square -->
-      <div
-        (click)="triggerImageClick()"
-        class="shrink-0 w-52 h-52 sm:w-64 sm:h-64 m-4 rounded-2xl border border-border bg-surface overflow-hidden flex items-center justify-center cursor-pointer transition-all duration-200 hover:border-sage-soft hover:shadow-warm focus-within:ring-2 focus-within:ring-sage-soft"
-      >
-        @if (imageLoading) {
-          <p class="text-sm text-muted">Loading...</p>
-        } @else if (form.get('image')?.value; as img) {
-          <img [src]="img" alt="" class="w-full h-full object-cover" />
-        } @else {
-          <span class="text-sm text-muted text-center px-3">Choose a picture</span>
-        }
-      </div>
-
-      <!-- Right: form fields -->
-      <div class="flex-1 p-4 flex flex-col gap-5 min-w-0 overflow-y-auto">
-        @if (error) {
-          <p class="text-sm text-ink">{{ error }}</p>
-        }
-        <div>
-          <input formControlName="name" type="text" placeholder="Name" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink placeholder:text-muted focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" />
-          @if (form.get('name')?.invalid && form.get('name')?.touched) {
-            <p class="text-xs text-muted mt-1.5">Name is required</p>
-          }
-        </div>
-        <div>
-          <select formControlName="goalStatus" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200">
-            @for (s of statuses; track s) {
-              <option [value]="s">{{ s }}</option>
-            }
-          </select>
-        </div>
-        <div>
-          <select formControlName="goalType" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200">
-            @for (t of types; track t) {
-              <option [value]="t">{{ t }}</option>
-            }
-          </select>
-        </div>
-        <div>
-          <select formControlName="goalCategory" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200">
-            @for (c of categories; track c) {
-              <option [value]="c">{{ c }}</option>
-            }
-          </select>
-        </div>
-        <div>
-          <p class="text-sm text-muted mb-2">Priority</p>
-          <div class="flex w-full gap-2">
-            @for (p of priorityOptions; track p) {
-              <button
-                type="button"
-                (click)="setPriority(p)"
-                class="flex-1 min-w-0 h-10 rounded-xl first:rounded-l-xl last:rounded-r-xl border text-sm font-medium transition-all duration-200 flex items-center justify-center -mr-px last:mr-0"
-                [class.bg-green-500]="form.get('priority')?.value === p && p === 1"
-                [class.border-green-500]="form.get('priority')?.value === p && p === 1"
-                [class.text-white]="form.get('priority')?.value === p && (p === 1 || p === 4 || p === 5)"
-                [class.bg-lime-400]="form.get('priority')?.value === p && p === 2"
-                [class.border-lime-400]="form.get('priority')?.value === p && p === 2"
-                [class.bg-yellow-400]="form.get('priority')?.value === p && p === 3"
-                [class.border-yellow-400]="form.get('priority')?.value === p && p === 3"
-                [class.bg-orange-500]="form.get('priority')?.value === p && p === 4"
-                [class.border-orange-500]="form.get('priority')?.value === p && p === 4"
-                [class.bg-red-500]="form.get('priority')?.value === p && p === 5"
-                [class.border-red-500]="form.get('priority')?.value === p && p === 5"
-                [class.text-ink-strong]="form.get('priority')?.value === p && (p === 2 || p === 3)"
-                [class.border-border]="form.get('priority')?.value !== p"
-                [class.bg-surface]="form.get('priority')?.value !== p"
-                [class.text-ink]="form.get('priority')?.value !== p"
-                [class.hover:border-sage-soft]="form.get('priority')?.value !== p"
+      <div class="flex-1 flex-col">
+        <div class="flex">
+        <!-- Left: image fields -->
+          <div class="ml-4 p-4 flex flex-col gap-3">
+            <div>
+              <p class="text-sm text-muted mb-2">Image</p>
+              <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)" class="hidden" />
+              <div
+                (click)="triggerImageClick()"
+                class="w-52 h-52 sm:w-64 sm:h-64  rounded-2xl border border-border bg-surface overflow-hidden flex items-center justify-center cursor-pointer transition-all duration-200 hover:border-sage-soft hover:shadow-warm focus-within:ring-2 focus-within:ring-sage-soft"
               >
-                {{ p }}
-              </button>
+                @if (imageLoading) {
+                  <p class="text-sm text-muted">Loading...</p>
+                } @else if (form.get('image')?.value; as img) {
+                  <img [src]="img" alt="" class="w-full h-full object-cover" />
+                } @else {
+                  <span class="text-sm text-muted text-center px-3">Choose a picture</span>
+                }
+              </div>
+            </div>
+    
+            
+        </div>
+        <!-- Right: form fields -->
+        <div class="flex-1 p-4 flex flex-col gap-3 min-w-0 overflow-y-auto">
+          @if (error) {
+            <p class="text-sm text-ink">{{ error }}</p>
+          }
+          <div>
+            <p class="text-sm text-muted mb-2">Name</p>
+            <input formControlName="name" type="text" placeholder="Name" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink placeholder:text-muted focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" />
+            @if (form.get('name')?.invalid && form.get('name')?.touched) {
+              <p class="text-xs text-muted mt-1.5">Name is required</p>
             }
           </div>
-        </div>
-        <div class="flex flex-wrap gap-3 pt-2 mt-auto">
-          @if (mode === 'create'){
-            <button type="button" (click)="close.emit()" class="flex-1 py-2.5 rounded-xl border border-border text-ink font-medium hover:bg-surface transition-colors duration-200">
-              Cancel
-            </button>
-          }
-          @if (mode === 'edit' && goal) {
-            @if (!confirmingDelete) {
-              <button type="button" (click)="onDeleteClick()" class="py-2.5 px-4 rounded-xl border border-border text-ink font-medium hover:bg-surface transition-colors duration-200">
-                Delete
-              </button>
-            } @else {
-              <div class="flex items-center gap-3">
-                <span class="text-sm text-muted">Delete this goal?</span>
-                <button type="button" (click)="onConfirmDelete()" class="py-2 px-3 rounded-xl border border-border text-ink text-sm font-medium hover:bg-surface">
-                  Yes
+          <div>
+            <p class="text-sm text-muted mb-2">Status</p>
+            <select formControlName="goalStatus" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200">
+              @for (s of statuses; track s) {
+                <option [value]="s">{{ s }}</option>
+              }
+            </select>
+          </div>
+          <div>
+            <p class="text-sm text-muted mb-2">Type</p>
+            <select formControlName="goalType" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200">
+              @for (t of types; track t) {
+                <option [value]="t">{{ t }}</option>
+              }
+            </select>
+          </div>
+          <div>
+            <p class="text-sm text-muted mb-2">Category</p>
+            <select formControlName="goalCategory" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200">
+              @for (c of categories; track c) {
+                <option [value]="c">{{ c }}</option>
+              }
+            </select>
+          </div>
+          <div>
+            <p class="text-sm text-muted mb-2">Priority</p>
+            <div class="flex w-full gap-2">
+              @for (p of priorityOptions; track p) {
+                <button
+                  type="button"
+                  (click)="setPriority(p)"
+                  class="flex-1 min-w-0 h-10 rounded-xl first:rounded-l-xl last:rounded-r-xl border text-sm font-medium transition-all duration-200 flex items-center justify-center -mr-px last:mr-0"
+                  [class.bg-green-500]="form.get('priority')?.value === p && p === 1"
+                  [class.border-green-500]="form.get('priority')?.value === p && p === 1"
+                  [class.bg-lime-400]="form.get('priority')?.value === p && p === 2"
+                  [class.border-lime-400]="form.get('priority')?.value === p && p === 2"
+                  [class.bg-yellow-400]="form.get('priority')?.value === p && p === 3"
+                  [class.border-yellow-400]="form.get('priority')?.value === p && p === 3"
+                  [class.bg-orange-500]="form.get('priority')?.value === p && p === 4"
+                  [class.border-orange-500]="form.get('priority')?.value === p && p === 4"
+                  [class.bg-red-500]="form.get('priority')?.value === p && p === 5"
+                  [class.border-red-500]="form.get('priority')?.value === p && p === 5"
+                  [class.border-border]="form.get('priority')?.value !== p"
+                  [class.bg-surface]="form.get('priority')?.value !== p"
+                  [class.text-ink]="form.get('priority')?.value !== p"
+                  [class.hover:border-sage-soft]="form.get('priority')?.value !== p"
+                >
+                  {{ p }}
                 </button>
-                <button type="button" (click)="onCancelDelete()" class="py-2 px-3 rounded-xl border border-border text-ink text-sm font-medium hover:bg-surface">
-                  No
-                </button>
-              </div>
-            }
-          }
-          <button type="submit" [disabled]="form.invalid || submitting || imageLoading" class="flex-1 py-2.5 rounded-xl bg-peach text-white font-medium hover:bg-peach-soft disabled:opacity-50 transition-colors duration-200">
-            {{ submitLabel }}
-          </button>
+              }
+            </div>
+          </div>
         </div>
       </div>
+      
+      <div class="flex flex-wrap gap-3 pt-2 mt-auto p-4">
+        @if (mode === 'create'){
+          <button type="button" (click)="close.emit()" class="flex-1 py-2.5 rounded-xl border border-border text-ink font-medium hover:bg-surface transition-colors duration-200">
+            Cancel
+          </button>
+        }
+        @if (mode === 'edit' && goal) {
+          @if (!confirmingDelete) {
+            <button type="button" (click)="onDeleteClick()" class="flex-1 py-2.5 px-4 rounded-xl border border-border text-ink font-medium hover:bg-surface transition-colors duration-200">
+              Delete
+            </button>
+          } @else {
+            <div class="flex items-center gap-3">
+              <span class="text-sm text-muted">Delete this goal?</span>
+              <button type="button" (click)="onConfirmDelete()" class="py-2 px-3 rounded-xl border border-border text-ink text-sm font-medium hover:bg-surface">
+                Yes
+              </button>
+              <button type="button" (click)="onCancelDelete()" class="py-2 px-3 rounded-xl border border-border text-ink text-sm font-medium hover:bg-surface">
+                No
+              </button>
+            </div>
+          }
+        }
+        <button type="submit" [disabled]="form.invalid || submitting || imageLoading" class="flex-1 py-2.5 rounded-xl bg-peach text-white font-medium hover:bg-peach-soft disabled:opacity-50 transition-colors duration-200">
+          {{ submitLabel }}
+        </button>
+      </div>
+    </div>
     </form>
   </div>
 </div>

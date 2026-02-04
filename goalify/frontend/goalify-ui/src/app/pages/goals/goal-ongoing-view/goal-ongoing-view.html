@@ -1,0 +1,79 @@
+@if (goals().length === 0) {
+  <p class="text-muted text-[15px]">No ongoing goals</p>
+} @else {
+  <div class="flex flex-col gap-12">
+    @for (goal of goals(); track goal.id) {
+      <div class="flex flex-col lg:flex-row gap-4">
+        <!-- Left / center: chart + milestones -->
+        <div class="flex-1 flex flex-col min-w-0">
+          <div class="rounded-2xl border border-border bg-surface-alt overflow-hidden shadow-warm">
+            <p class="px-5 pt-4 text-muted text-sm ">Progress</p>
+            <div class="p-5 h-[400px]">
+              <canvas baseChart
+                type="line"
+                [data]="lineChartData"
+                [options]="lineChartOptions">
+              </canvas>
+            </div>
+            <div class="p-4 flex flex-wrap gap-8 ">
+              @for (m of milestones; track m.label) {
+                <div class="flex rounded-xl gap-2 border border-border bg-surface-alt px-4 py-3 shadow-warm min-w-[180px]">
+                  <div class="flex flex-col">
+                    <p class="text-ink-strong text-sm font-medium">{{ m.label }}</p>
+                    <p class="text-ink text-sm mt-1">effort +{{ m.effortDelta }}</p>
+                  </div>
+                  <div class="flex">
+                    <p class="rounded-xl text-muted text-xs p-4 bg-surface">{{ m.doneDay }}</p>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: goal details -->
+        <div class="lg:w-72 shrink-0 flex flex-col gap-3">
+          <button type="button" (click)="editGoal.emit(goal)"
+            class="text-left rounded-2xl border-2 border-border bg-surface-alt overflow-hidden transition-all duration-200 hover:border-peach-soft hover:shadow-warm-md focus:outline-none focus:ring-2 focus:ring-sage-soft focus:ring-offset-2 focus:ring-offset-surface shadow-warm">
+            <div class="aspect-4/3 bg-gradient-to-br from-lilac-soft/70 to-sage-soft/60 flex items-center justify-center relative">
+              <img [src]="getGoalImageUrl(goal)" alt="" class="w-full h-full object-cover" />
+              <span
+                class="absolute top-3 right-3 size-7 rounded-full flex items-center justify-center text-xs font-medium shadow-sm border text-black"
+                [class.bg-green-500]="goal.priority === 1"
+                [class.border-green-500]="goal.priority === 1"
+                [class.bg-lime-400]="goal.priority === 2"
+                [class.border-lime-400]="goal.priority === 2"
+                [class.bg-yellow-400]="goal.priority === 3"
+                [class.border-yellow-400]="goal.priority === 3"
+                [class.bg-orange-500]="goal.priority === 4"
+                [class.border-orange-500]="goal.priority === 4"
+                [class.bg-red-500]="goal.priority === 5"
+                [class.border-red-500]="goal.priority === 5">
+                {{ goal.priority }}
+              </span>
+            </div>
+            <div class="p-4">
+              <h2 class="font-semibold text-ink-strong text-[15px] truncate">{{ goal.name }}</h2>
+            </div>
+          </button>
+
+          <div class="rounded-2xl border border-border bg-surface-alt p-4 shadow-warm space-y-4">
+            <div>
+              <p class="text-muted text-sm">Effort needed to achieve it</p>
+              <p class="text-ink-strong font-semibold text-lg mt-1 rounded-lg border border-border bg-surface px-3 py-2 w-full">{{ effortNeeded }}</p>
+            </div>
+            <div>
+              <p class="text-muted text-sm">day needed to achieve it</p>
+              <p class="text-ink-strong font-semibold text-lg mt-1 rounded-lg border border-border bg-surface px-3 py-2 w-full">{{ daysNeeded }}</p>
+            </div>
+          </div>
+
+          <button type="button" (click)="markAsCompleted.emit(goal)"
+            class="w-full rounded-xl border-2 border-ink-strong bg-surface-alt py-3 text-ink-strong font-semibold text-sm transition-all duration-200 hover:bg-peach-soft hover:border-peach focus:outline-none focus:ring-2 focus:ring-sage-soft focus:ring-offset-2 focus:ring-offset-surface">
+            Mark as completed
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+}

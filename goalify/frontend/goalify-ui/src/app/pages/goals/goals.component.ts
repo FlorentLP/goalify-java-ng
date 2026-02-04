@@ -3,11 +3,12 @@ import { GoalsService } from '../../goals/goals.service';
 import type { GoalResponse, GoalStatus, CreateGoalRequest } from '../../goals/goals.model';
 import { GoalFormModalComponent } from './goal-form-modal/goal-form-modal.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { GoalOngoingView } from './goal-ongoing-view/goal-ongoing-view';
 
 @Component({
   selector: 'app-goals',
   standalone: true,
-  imports: [GoalFormModalComponent],
+  imports: [GoalFormModalComponent, GoalOngoingView],
   templateUrl: './goals.component.html',
   styleUrl: './goals.component.css'
 })
