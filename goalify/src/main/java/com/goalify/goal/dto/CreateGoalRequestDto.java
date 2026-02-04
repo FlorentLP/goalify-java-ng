@@ -32,4 +32,8 @@ public class CreateGoalRequestDto {
     private int priority;
 
     private String image;
+    
+    private Integer daysNeeded;
+
+    private Integer effortsNeeded;
 }

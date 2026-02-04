@@ -53,6 +53,12 @@ public class Goal {
     @Column(columnDefinition = "TEXT")
     private String image;
 
+    @Column(name = "days_needed", nullable = true)
+    private Integer daysNeeded;
+
+    @Column(name = "efforts_needed", nullable = true)
+    private Integer effortsNeeded;
+
     public Goal(
             User user,
             String name,
@@ -60,7 +66,9 @@ public class Goal {
             GoalType goalType,
             GoalCategory goalCategory,
             int priority,
-            String image
+            String image,
+            Integer daysNeeded,
+            Integer effortsNeeded
     ) {
         this.user = user;
         this.name = name;
@@ -69,6 +77,8 @@ public class Goal {
         this.goalCategory = goalCategory;
         this.priority = priority;
         this.image = image;
+        this.daysNeeded = daysNeeded;
+        this.effortsNeeded = effortsNeeded;
     }
 
     @PrePersist

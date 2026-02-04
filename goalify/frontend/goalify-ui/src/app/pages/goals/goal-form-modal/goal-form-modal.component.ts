@@ -12,6 +12,7 @@ import type { CreateGoalRequest, GoalResponse, GoalStatus, GoalType, GoalCategor
 export class GoalFormModalComponent {
   @Input() mode: 'create' | 'edit' = 'create';
   @Input() goal: GoalResponse | null = null;
+  @Input() filterStatus : GoalStatus = 'TODO';
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   @Output() close = new EventEmitter<void>();
@@ -37,7 +38,9 @@ export class GoalFormModalComponent {
       goalType: ['LIFETIME', Validators.required],
       goalCategory: ['OTHER', Validators.required],
       priority: [3, [Validators.required, Validators.min(1), Validators.max(5)]],
-      image: [null as string | null]
+      image: [null as string | null],
+      daysNeeded: [null as number | null],
+      effortsNeeded: [null as number | null]
       });
   }
 
@@ -49,7 +52,9 @@ export class GoalFormModalComponent {
         goalType: this.goal.goalType,
         goalCategory: this.goal.goalCategory,
         priority: this.goal.priority,
-        image: this.goal.image
+        image: this.goal.image,
+        daysNeeded: this.goal.daysNeeded ?? null,
+        effortsNeeded: this.goal.effortsNeeded ?? null
       });
     } else {
       this.form.reset({
@@ -58,7 +63,9 @@ export class GoalFormModalComponent {
         goalType: 'LIFETIME',
         goalCategory: 'OTHER',
         priority: 3,
-        image: null
+        image: null,
+        daysNeeded: null,
+        effortsNeeded: null
       });
     }
     this.error = null;

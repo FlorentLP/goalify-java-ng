@@ -23,11 +23,6 @@ export class GoalOngoingView {
   editGoal = output<GoalResponse>();
   markAsCompleted = output<GoalResponse>();
 
-  /** Placeholder: effort needed to achieve the goal (API could provide this later). */
-  effortNeeded = 500;
-  /** Placeholder: days needed to achieve the goal (API could provide this later). */
-  daysNeeded = 90;
-
   /** Placeholder milestones for the chart (API could provide this later). */
   milestones: Milestone[] = [
     { effortDelta: 10, doneDay: 18, label: 'Prepare interview' },

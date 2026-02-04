@@ -27,6 +27,10 @@ public class GoalResponseDto {
 
     private String image;
 
+    private Integer daysNeeded;
+
+    private Integer effortsNeeded;
+
     public GoalResponseDto(Goal goal){
         this.id = goal.getId();
         this.name = goal.getName();
@@ -35,5 +39,8 @@ public class GoalResponseDto {
         this.goalCategory = goal.getGoalCategory();
         this.priority = goal.getPriority();
         this.image = goal.getImage();
+        this.daysNeeded = goal.getDaysNeeded();
+        this.effortsNeeded = goal.getEffortsNeeded();
+
     }
 }

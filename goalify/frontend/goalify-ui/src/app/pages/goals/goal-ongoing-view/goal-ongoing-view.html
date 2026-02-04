@@ -60,11 +60,11 @@
           <div class="rounded-2xl border border-border bg-surface-alt p-4 shadow-warm space-y-4">
             <div>
               <p class="text-muted text-sm">Effort needed to achieve it</p>
-              <p class="text-ink-strong font-semibold text-lg mt-1 rounded-lg border border-border bg-surface px-3 py-2 w-full">{{ effortNeeded }}</p>
+              <p class="text-ink-strong font-semibold text-lg mt-1 rounded-lg border border-border bg-surface px-3 py-2 w-full">{{ goal.effortsNeeded? goal.effortsNeeded : 0 }}</p>
             </div>
             <div>
               <p class="text-muted text-sm">day needed to achieve it</p>
-              <p class="text-ink-strong font-semibold text-lg mt-1 rounded-lg border border-border bg-surface px-3 py-2 w-full">{{ daysNeeded }}</p>
+              <p class="text-ink-strong font-semibold text-lg mt-1 rounded-lg border border-border bg-surface px-3 py-2 w-full">{{ goal.daysNeeded ? goal.daysNeeded : 0 }}</p>
             </div>
           </div>
 

@@ -82,6 +82,7 @@
     <app-goal-form-modal
   [mode]="modalOpen()!"
   [goal]="goalToEdit()"
+  [filterStatus]="filterStatus()"
   (close)="closeModal()"
   (saved)="onModalSaved($event)"
   (delete)="onDelete($event)"
