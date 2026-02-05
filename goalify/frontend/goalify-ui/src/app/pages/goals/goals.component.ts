@@ -2,19 +2,24 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { GoalsService } from '../../goals/goals.service';
 import type { GoalResponse, GoalStatus, CreateGoalRequest } from '../../goals/goals.model';
 import { GoalFormModalComponent } from './goal-form-modal/goal-form-modal.component';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { GoalOngoingView } from './goal-ongoing-view/goal-ongoing-view';
+import { GoalTodoView } from './goal-todo-view/goal-todo-view';
+import { GoalMaintenanceView } from './goal-maintenance-view/goal-maintenance-view';
+import { GoalDoneView } from './goal-done-view/goal-done-view';
 
 @Component({
   selector: 'app-goals',
   standalone: true,
-  imports: [GoalFormModalComponent, GoalOngoingView],
+  imports: [GoalFormModalComponent,
+    GoalOngoingView,
+    GoalTodoView,
+    GoalMaintenanceView,
+    GoalDoneView,],
   templateUrl: './goals.component.html',
   styles: []
 })
 export class GoalsComponent implements OnInit {
   private goalsService = inject(GoalsService);
-  private sanitizer = inject(DomSanitizer);
 
   goals = signal<GoalResponse[]>([]);
   loading = signal(true);
@@ -97,21 +102,6 @@ export class GoalsComponent implements OnInit {
     });
   }
 
-  getGoalImageUrl(goal: GoalResponse): string | SafeResourceUrl {
-    if (goal.image) {
-      return this.sanitizer.bypassSecurityTrustResourceUrl(goal.image);
-    }
-    const base = 'https://placehold.co/400x240';
-    const colors: Record<string, string> = {
-      HEALTH: 'b8c9ac/ffffff',
-      SOCIAL: 'a8b8c8/ffffff',
-      INTELLECT: 'c4b8d4/ffffff',
-      AESTHETIC: 'e0b8b8/ffffff',
-      MINDSET: 'e0b8a8/ffffff',
-      OTHER: 'c4b8a8/ffffff'
-    };
-    const color = colors[goal.goalCategory] ?? 'c4b8a8/ffffff';
-    return `${base}/${color}?text=${encodeURIComponent(goal.name)}`;
-  }
+
 
 }

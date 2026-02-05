@@ -32,59 +32,39 @@
 
   @if (loading()) {
     <p class="text-muted text-[15px]">Loading...</p>
-  } 
-  @if (filterStatus() === 'ONGOING') {
-    <app-goal-ongoing-view [goals]="goals()" (editGoal)="openEditModal($event)" />
-
-  } 
-  
-  @else if (goals().length === 0) {
-    <p class="text-muted text-[15px]">No goals yet</p>
-  } 
-  @else {
-    <ul class="grid gap-5 sm:grid-cols-3 lg:grid-cols-5">
-      @for (goal of goals(); track goal.id) {
-        <li>
-          <button type="button" (click)="openEditModal(goal)" class="w-full text-left rounded-2xl border border-border bg-surface-alt overflow-hidden transition-all duration-200 hover:border-peach-soft hover:shadow-warm-md focus:outline-none focus:ring-2 focus:ring-sage-soft focus:ring-offset-2 focus:ring-offset-surface shadow-warm">
-            <div class="aspect-4/3 bg-gradient-to-br from-lilac-soft/70 to-sage-soft/60 flex items-center justify-center relative">
-              <img [src]="getGoalImageUrl(goal)" alt="" class="w-full h-full object-cover" />
-              <span
-                class="absolute text-black top-3 right-3 size-7 rounded-full flex items-center justify-center text-xs font-medium shadow-sm border"
-                [class.bg-green-500]="goal.priority === 1"
-                [class.border-green-500]="goal.priority === 1"
-                [class.bg-lime-400]="goal.priority === 2"
-                [class.border-lime-400]="goal.priority === 2"
-                [class.bg-yellow-400]="goal.priority === 3"
-                [class.border-yellow-400]="goal.priority === 3"
-                [class.bg-orange-500]="goal.priority === 4"
-                [class.border-orange-500]="goal.priority === 4"
-                [class.bg-red-500]="goal.priority === 5"
-                [class.border-red-500]="goal.priority === 5">
-                {{ goal.priority }}
-              </span>
-            </div>
-            <div class="p-4">
-              <h2 class="font-medium text-ink-strong truncate text-[15px]">{{ goal.name }}</h2>
-            </div>
-          </button>
-        </li>
-      }
-    </ul>
+  }
+  @if (filterStatus() === 'TODO') {
+    <app-goal-todo-view [goals]="goals()" (editGoal)="openEditModal($event)" />
     <button type="button" class="fixed bottom-8 right-8 size-14 rounded-2xl bg-peach text-white flex items-center justify-center transition-all duration-200 hover:bg-peach-soft focus:outline-none focus:ring-2 focus:ring-peach focus:ring-offset-2 focus:ring-offset-surface shadow-warm-md" aria-label="Add a goal" (click)="openCreateModal()">
       <span class="text-2xl font-light leading-none">+</span>
     </button>
-  }
-
-
-</div>
   
-  @if (modalOpen()) {
-    <app-goal-form-modal
-  [mode]="modalOpen()!"
-  [goal]="goalToEdit()"
-  [filterStatus]="filterStatus()"
-  (close)="closeModal()"
-  (saved)="onModalSaved($event)"
-  (delete)="onDelete($event)"
-/>
+    @if (modalOpen()) {
+      <app-goal-form-modal
+    [mode]="modalOpen()!"
+    [goal]="goalToEdit()"
+    [filterStatus]="filterStatus()"
+    (close)="closeModal()"
+    (saved)="onModalSaved($event)"
+    (delete)="onDelete($event)"
+    />}
   }
+  @if (filterStatus() === 'ONGOING') {
+    <app-goal-ongoing-view [goals]="goals()" (editGoal)="openEditModal($event)" />
+    @if (modalOpen()) {
+      <app-goal-form-modal
+    [mode]="modalOpen()!"
+    [goal]="goalToEdit()"
+    [filterStatus]="filterStatus()"
+    (close)="closeModal()"
+    (saved)="onModalSaved($event)"
+    (delete)="onDelete($event)"
+    />}
+  }
+  @if (filterStatus() === 'MAINTENANCE') {
+    <app-goal-maintenance-view [goals]="goals()" (editGoal)="openEditModal($event)" />
+  }
+  @if (filterStatus() === 'DONE') {
+    <app-goal-done-view [goals]="goals()" (editGoal)="openEditModal($event)" />
+  }
+</div>
