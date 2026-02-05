@@ -1,11 +1,11 @@
 package com.goalify.habit;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
-import com.goalify.user.User;
+import com.goalify.goal.Goal;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,8 +24,8 @@ public class Habit {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "goal_id", nullable = false)
+    private Goal goal;
 
     @Column(nullable = false)
     private String name;
@@ -33,52 +33,68 @@ public class Habit {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private GoalStatus goalStatus;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private GoalType goalType;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private GoalCategory goalCategory;
-
-    @Column(nullable = false)
+    @Column(name = "effort_point", nullable = false)
     @Min(1)
-    @Max(5)
-    private int priority = 1;
+    private int effortPoint = 1;
 
-    @Column(columnDefinition = "TEXT")
-    private String image;
+    @Column(name = "has_data", nullable = false)
+    private boolean hasData = false;
 
-    @Column(name = "days_needed", nullable = true)
-    private Integer daysNeeded;
+    @Column(name = "scheduled_time", nullable = false)
+    private LocalTime scheduledTime = LocalTime.of(9, 0);
 
-    @Column(name = "efforts_needed", nullable = true)
-    private Integer effortsNeeded;
+    @Column(name = "emoji", length = 10, nullable = true)
+    private String emoji;
+
+    @Column(name = "recurrence_monday", nullable = false)
+    private boolean recurrenceMonday = true;
+
+    @Column(name = "recurrence_tuesday", nullable = false)
+    private boolean recurrenceTuesday = true;
+
+    @Column(name = "recurrence_wednesday", nullable = false)
+    private boolean recurrenceWednesday = true;
+
+    @Column(name = "recurrence_thursday", nullable = false)
+    private boolean recurrenceThursday = true;
+
+    @Column(name = "recurrence_friday", nullable = false)
+    private boolean recurrenceFriday = true;
+
+    @Column(name = "recurrence_saturday", nullable = false)
+    private boolean recurrenceSaturday = true;
+
+    @Column(name = "recurrence_sunday", nullable = false)
+    private boolean recurrenceSunday = true;
 
     public Habit(
-            User user,
-            String name,
-            GoalStatus goalStatus,
-            GoalType goalType,
-            GoalCategory goalCategory,
-            int priority,
-            String image,
-            Integer daysNeeded,
-            Integer effortsNeeded
+        Goal goal,
+        String name,
+        int effortPoint,
+        Boolean hasData,
+        LocalTime scheduledTime,
+        String emoji,
+        boolean recurrenceMonday,
+        boolean recurrenceTuesday,
+        boolean recurrenceWednesday,
+        boolean recurrenceThursday,
+        boolean recurrenceFriday,
+        boolean recurrenceSaturday,
+        boolean recurrenceSunday
     ) {
-        this.user = user;
-        this.name = name;
-        this.goalStatus = goalStatus;
-        this.goalType = goalType;
-        this.goalCategory = goalCategory;
-        this.priority = priority;
-        this.image = image;
-        this.daysNeeded = daysNeeded;
-        this.effortsNeeded = effortsNeeded;
+    this.goal = goal;
+    this.name = name;
+    this.effortPoint = effortPoint;
+    this.hasData = hasData;
+    this.scheduledTime = scheduledTime != null ? scheduledTime : LocalTime.of(9, 0);
+    this.emoji = emoji;
+    this.recurrenceMonday = recurrenceMonday;
+    this.recurrenceTuesday = recurrenceTuesday;
+    this.recurrenceWednesday = recurrenceWednesday;
+    this.recurrenceThursday = recurrenceThursday;
+    this.recurrenceFriday = recurrenceFriday;
+    this.recurrenceSaturday = recurrenceSaturday;
+    this.recurrenceSunday = recurrenceSunday;
     }
 
     @PrePersist
