@@ -9,7 +9,7 @@ import { SidebarComponent } from './core/sidebar/sidebar.component';
   selector: 'app-root',
   imports: [RouterOutlet, HeaderComponent, SidebarComponent],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styles: []
 })
 export class App {
   constructor(public auth: AuthService) {}
