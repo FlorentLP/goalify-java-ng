@@ -5,10 +5,35 @@
   </div>
   <div class="flex items-center gap-3">
     <span class="text-sm text-ink hidden sm:inline">{{ auth.getStoredUserName() || 'User' }}</span>
-    <div class="h-9 w-9 rounded-full bg-blush flex items-center justify-center text-sm font-medium text-ink-strong ring-2 ring-white/50">
-      FL
-    </div>
-    <button type="button" routerLink="/login" (click)="auth.logout()" class="self-start px-3 py-2 rounded-3xl border border-border text-ink text-sm font-medium hover:bg-peach-soft/50 hover:border-peach-soft/60 transition-colors duration-200">Logout</button>
 
+    <div class="relative">
+      <button
+        type="button"
+        (click)="toggleDropdown()"
+        class="h-9 w-9 rounded-full bg-blush flex items-center justify-center text-sm font-medium text-ink-strong ring-2 ring-white/50 hover:ring-peach-soft transition-shadow cursor-pointer"
+        aria-label="Open menu"
+      >
+        {{ (auth.getStoredUserName() || 'User').slice(0, 2).toUpperCase() }}
+      </button>
+
+      @if (dropdownOpen) {
+        <div
+          class="fixed inset-0 z-10"
+          (click)="closeDropdown()"
+          aria-hidden="true"
+        ></div>
+        <div
+          class="absolute right-0 top-full mt-1 z-20 min-w-[120px] rounded-xl border border-border bg-surface-alt shadow-warm-md"
+        >
+          <button
+            type="button"
+            (click)="logout()"
+            class="w-full text-left px-4 py-2.5 text-sm text-ink font-medium hover:bg-peach-soft/50 rounded-lg transition-colors"
+          >
+            Logout
+          </button>
+        </div>
+      }
+    </div>
   </div>
 </header>
