@@ -10,7 +10,7 @@ import { GoalOngoingView } from './goal-ongoing-view/goal-ongoing-view';
   standalone: true,
   imports: [GoalFormModalComponent, GoalOngoingView],
   templateUrl: './goals.component.html',
-  styleUrl: './goals.component.css'
+  styles: []
 })
 export class GoalsComponent implements OnInit {
   private goalsService = inject(GoalsService);

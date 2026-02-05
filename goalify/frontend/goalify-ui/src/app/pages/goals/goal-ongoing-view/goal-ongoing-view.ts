@@ -14,7 +14,7 @@ export interface Milestone {
   selector: 'app-goal-ongoing-view',
   imports: [BaseChartDirective],
   templateUrl: './goal-ongoing-view.html',
-  styleUrl: './goal-ongoing-view.css',
+  styles: []
 })
 export class GoalOngoingView {
   private sanitizer = inject(DomSanitizer);

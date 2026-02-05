@@ -5,10 +5,15 @@ import { AuthService } from '../../auth/auth.service';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [RouterLink,RouterLinkActive, RouterOutlet],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet],
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.css'
-})
+  styles: [`
+    :host {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+    }
+  `]})
 export class SidebarComponent {
   constructor(public auth: AuthService) {}
 }

@@ -7,7 +7,7 @@ import { AuthService } from '../../auth/auth.service';
   standalone: true,
   imports: [RouterLink],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styles: []
 })
 export class DashboardComponent {
   constructor(public auth: AuthService) {}

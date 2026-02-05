@@ -7,7 +7,7 @@ import type { CreateGoalRequest, GoalResponse, GoalStatus, GoalType, GoalCategor
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './goal-form-modal.component.html',
-  styleUrl: './goal-form-modal.component.css'
+  styles: []
 })
 export class GoalFormModalComponent {
   @Input() mode: 'create' | 'edit' = 'create';

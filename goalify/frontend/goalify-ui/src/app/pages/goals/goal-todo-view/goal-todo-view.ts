@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-goal-todo-view',
   imports: [],
   templateUrl: './goal-todo-view.html',
-  styleUrl: './goal-todo-view.css',
+  styles: []
 })
 export class GoalTodoView {
 

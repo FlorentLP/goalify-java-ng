@@ -9,7 +9,7 @@ import { LoginRequest } from '../../auth/auth.model';
   standalone: true,
   imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styles: []
 })
 export class LoginComponent {
   form: FormGroup;

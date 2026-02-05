@@ -9,7 +9,7 @@ import { RegisterRequest } from '../../auth/auth.model';
   standalone: true,
   imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  styles: []
 })
 export class RegisterComponent {
   form: FormGroup;
