@@ -1,9 +1,7 @@
-package com.goalify.goal;
+package com.goalify.habit;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import com.goalify.habit.Habit;
 import com.goalify.user.User;
 
 import jakarta.persistence.*;
@@ -15,11 +13,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "goals")
+@Table(name = "habits")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Goal {
+public class Habit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,10 +59,7 @@ public class Goal {
     @Column(name = "efforts_needed", nullable = true)
     private Integer effortsNeeded;
 
-    @OneToMany(mappedBy = "goal", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Habit> habits;
-
-    public Goal(
+    public Habit(
             User user,
             String name,
             GoalStatus goalStatus,
