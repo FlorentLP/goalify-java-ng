@@ -28,7 +28,7 @@ public class HabitService {
         }
         Long userId = (Long) principal;
 
-        Goal goal = goalRepository.findById(dto.getGoal_id()).orElseThrow(() -> new IllegalStateException("Goal not found"));
+        Goal goal = goalRepository.findById(dto.getGoalId()).orElseThrow(() -> new IllegalStateException("Goal not found"));
         if (!goal.getUser().getId().equals(userId)) {
             throw new IllegalStateException("Not your goal");
         }
@@ -91,8 +91,8 @@ public class HabitService {
         if (!habit.getGoal().getUser().getId().equals(userId)) {
         throw new IllegalStateException("Not your habit");
         }
-        if (!habit.getGoal().getId().equals(dto.getGoal_id())) {
-            Goal dtoGoal = this.goalRepository.findById(dto.getGoal_id())
+        if (!habit.getGoal().getId().equals(dto.getGoalId())) {
+            Goal dtoGoal = this.goalRepository.findById(dto.getGoalId())
             .orElseThrow(() -> new IllegalStateException("Goal not found"));
             
             if (!dtoGoal.getUser().getId().equals(userId)) {

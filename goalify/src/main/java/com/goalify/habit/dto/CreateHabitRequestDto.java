@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 public class CreateHabitRequestDto {
     @NotNull
-    private Long goal_id;
+    private Long goalId;
     
     @NotBlank
     private String name;

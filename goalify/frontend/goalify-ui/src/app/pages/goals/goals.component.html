@@ -1,30 +1,8 @@
 <div class="flex flex-col gap-8 h-full">
-  <div class="flex flex-wrap items-center gap-2">
-    <button type="button" (click)="setFilter('TODO')" class="px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200"
-      [class.bg-lilac-soft]="filterStatus() === 'TODO'" [class.text-ink-strong]="filterStatus() === 'TODO'"
-      [class.bg-surface-alt]="filterStatus() !== 'TODO'" [class.text-muted]="filterStatus() !== 'TODO'"
-      [class.hover:bg-lilac-soft/70]="filterStatus() !== 'TODO'">
-      To do
-    </button>
-    <button type="button" (click)="setFilter('ONGOING')" class="px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200"
-      [class.bg-lilac-soft]="filterStatus() === 'ONGOING'" [class.text-ink-strong]="filterStatus() === 'ONGOING'"
-      [class.bg-surface-alt]="filterStatus() !== 'ONGOING'" [class.text-muted]="filterStatus() !== 'ONGOING'"
-      [class.hover:bg-lilac-soft/70]="filterStatus() !== 'ONGOING'">
-      Ongoing
-    </button>
-    <button type="button" (click)="setFilter('MAINTENANCE')" class="px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200"
-      [class.bg-lilac-soft]="filterStatus() === 'MAINTENANCE'" [class.text-ink-strong]="filterStatus() === 'MAINTENANCE'"
-      [class.bg-surface-alt]="filterStatus() !== 'MAINTENANCE'" [class.text-muted]="filterStatus() !== 'MAINTENANCE'"
-      [class.hover:bg-lilac-soft/70]="filterStatus() !== 'MAINTENANCE'">
-      Maintenance
-    </button>
-    <button type="button" (click)="setFilter('DONE')" class="px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200"
-      [class.bg-lilac-soft]="filterStatus() === 'DONE'" [class.text-ink-strong]="filterStatus() === 'DONE'"
-      [class.bg-surface-alt]="filterStatus() !== 'DONE'" [class.text-muted]="filterStatus() !== 'DONE'"
-      [class.hover:bg-lilac-soft/70]="filterStatus() !== 'DONE'">
-      Done
-    </button>
-  </div>
+  <app-filter-pills
+    type="goals"
+    [selectedValue]="filterStatus()"
+    (valueChange)="setFilter($event)" />
 
   @if (error()) {
     <div class="rounded-xl border border-border bg-surface-alt text-ink px-4 py-3 text-sm">{{ error() }}</div>

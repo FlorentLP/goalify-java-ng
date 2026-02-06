@@ -1,11 +1,12 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { GoalsService } from '../../goals/goals.service';
-import type { GoalResponse, GoalStatus, CreateGoalRequest } from '../../goals/goals.model';
+import type { GoalResponse, CreateGoalRequest } from '../../goals/goals.model';
 import { GoalFormModalComponent } from './goal-form-modal/goal-form-modal.component';
 import { GoalOngoingView } from './goal-ongoing-view/goal-ongoing-view';
 import { GoalTodoView } from './goal-todo-view/goal-todo-view';
 import { GoalMaintenanceView } from './goal-maintenance-view/goal-maintenance-view';
 import { GoalDoneView } from './goal-done-view/goal-done-view';
+import { FilterPillsComponent, GoalStatus } from '../../core/filter-pills.component/filter-pills.component';
 
 @Component({
   selector: 'app-goals',
@@ -14,7 +15,9 @@ import { GoalDoneView } from './goal-done-view/goal-done-view';
     GoalOngoingView,
     GoalTodoView,
     GoalMaintenanceView,
-    GoalDoneView,],
+    GoalDoneView,
+    FilterPillsComponent
+  ],
   templateUrl: './goals.component.html',
   styles: []
 })
@@ -53,8 +56,8 @@ export class GoalsComponent implements OnInit {
     });
   }
 
-  setFilter(status: GoalStatus): void {
-    this.filterStatus.set(status);
+  setFilter(status: string): void {
+    this.filterStatus.set(status as GoalStatus);
     this.loadGoals();
   }
 
