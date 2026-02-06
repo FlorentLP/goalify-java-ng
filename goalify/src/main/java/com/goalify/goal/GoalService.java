@@ -108,9 +108,11 @@ public class GoalService {
 
     public void deleteGoal(Long goalId) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!(principal instanceof Long userId)) {
+        if (principal == null || !(principal instanceof Long)) {
             throw new IllegalStateException("User not authenticated");
         }
+        Long userId = (Long) principal;
+
     
         Goal goal = goalRepository.findById(goalId)
                 .orElseThrow(() -> new IllegalStateException("Goal not found"));

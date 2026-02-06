@@ -52,11 +52,11 @@ public class GoalController {
             List<Goal> goals = goalService.getGoals(status);
 
             List<GoalResponseDto> dtos = goals.stream()
-            .map(GoalResponseDto::new)
+            .map(goal -> new GoalResponseDto(goal))
             .toList();
 
             return ResponseEntity.status(HttpStatus.OK).body(dtos);
-        } catch (IllegalStateException e) {
+        }  catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "Could not load goals"));
         }
     }

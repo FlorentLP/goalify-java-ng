@@ -12,6 +12,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class HabitResponseDto {
+    private Long id;
+
     private Long goal_id;
     
     private String name;
@@ -39,6 +41,7 @@ public class HabitResponseDto {
     private Boolean recurrenceSunday;
 
     public HabitResponseDto(Habit habit){
+        this.id = habit.getId();
         this.goal_id = habit.getGoal().getId();
         this.name = habit.getName();
         this.effortPoint = habit.getEffortPoint();
@@ -52,6 +55,5 @@ public class HabitResponseDto {
         this.recurrenceFriday = habit.isRecurrenceFriday();
         this.recurrenceSaturday = habit.isRecurrenceSaturday();
         this.recurrenceSunday = habit.isRecurrenceSunday();
-
     }
 }

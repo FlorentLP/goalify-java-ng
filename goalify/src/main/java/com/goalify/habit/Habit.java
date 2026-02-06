@@ -22,7 +22,7 @@ public class Habit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "goal_id", nullable = false)
     private Goal goal;
@@ -68,6 +68,7 @@ public class Habit {
     private boolean recurrenceSunday = true;
 
     public Habit(
+        
         Goal goal,
         String name,
         int effortPoint,
