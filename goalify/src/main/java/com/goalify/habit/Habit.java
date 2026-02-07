@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import com.goalify.goal.Goal;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -35,6 +36,7 @@ public class Habit {
 
     @Column(name = "effort_point", nullable = false)
     @Min(1)
+    @Max(10)
     private int effortPoint = 1;
 
     @Column(name = "has_data", nullable = false)
