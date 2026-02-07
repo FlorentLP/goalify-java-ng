@@ -1,0 +1,26 @@
+<div class="flex flex-col gap-8 h-full">
+  <app-filter-pills
+    type="goals"
+    [selectedValue]="filterStatus()"
+    (valueChange)="setFilter($event)" />
+
+  @if (error()) {
+    <div class="rounded-xl border border-border bg-surface-alt text-ink px-4 py-3 text-sm">{{ error() }}</div>
+  }
+  @if (loading()) {
+    <p class="text-muted text-[15px]">Loading...</p>
+  }
+  @if (filterStatus() === 'TODO') {
+    <app-goal-todo-view
+    [goals]="goals()"
+    [error]="error()"
+    (loadGoals)="loadGoals()"
+    />
+  }
+  @if (filterStatus() === 'ONGOING') {
+  }
+  @if (filterStatus() === 'MAINTENANCE') {
+  }
+  @if (filterStatus() === 'DONE') {
+  }
+</div>

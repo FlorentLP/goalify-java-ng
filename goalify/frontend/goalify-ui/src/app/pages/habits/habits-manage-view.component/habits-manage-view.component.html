@@ -1,0 +1,13 @@
+@if (habits().length === 0) {
+    <p class="text-muted text-[15px]">No habits yet</p>
+  }
+@else
+{
+    <ul class="grid gap-5 sm:grid-cols-3 lg:grid-cols-5">
+    @for (habit of habits(); track habit.id) {
+      <li>
+        {{habit.name}}
+      </li>
+    }
+    </ul>
+}

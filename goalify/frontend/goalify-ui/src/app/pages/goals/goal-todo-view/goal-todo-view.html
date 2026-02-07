@@ -5,7 +5,7 @@
     <ul class="grid gap-5 sm:grid-cols-3 lg:grid-cols-5">
     @for (goal of goals(); track goal.id) {
       <li>
-        <button type="button" (click)="editGoal.emit(goal)" class="w-full text-left rounded-2xl border border-border bg-surface-alt overflow-hidden transition-all duration-200 hover:border-peach-soft hover:shadow-warm-md focus:outline-none focus:ring-2 focus:ring-sage-soft focus:ring-offset-2 focus:ring-offset-surface shadow-warm">
+        <button type="button" (click)="openEditModal(goal)" class="w-full text-left rounded-2xl border border-border bg-surface-alt overflow-hidden transition-all duration-200 hover:border-peach-soft hover:shadow-warm-md focus:outline-none focus:ring-2 focus:ring-sage-soft focus:ring-offset-2 focus:ring-offset-surface shadow-warm">
           <div class="aspect-4/3 bg-gradient-to-br from-lilac-soft/70 to-sage-soft/60 flex items-center justify-center relative">
             <img [src]="getGoalImageUrl(goal)" alt="" class="w-full h-full object-cover" />
             <span
@@ -31,3 +31,13 @@
     }
     </ul>
 }
+@if (modalOpen()) {
+  <app-goal-form-modal
+  [mode]="modalOpen()!"
+  [goal]="goalToEdit()"
+  [filterStatus]="'TODO'"
+  (close)="closeModal()"
+  (saved)="onModalSaved($event)"
+  (delete)="onDelete($event)"
+  />}
+<app-add-fab (addClick)="openCreateModal()" />

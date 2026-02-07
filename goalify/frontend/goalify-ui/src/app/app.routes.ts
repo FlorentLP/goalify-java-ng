@@ -3,7 +3,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { authGuard } from './auth/auth.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { GoalsComponent } from './pages/goals/goals.component';
+import { GoalsComponent } from './pages/goals/goal.component/goals.component';
 import { HabitsComponent } from './pages/habits/habits.component/habits.component';
 
 export const routes: Routes = [
