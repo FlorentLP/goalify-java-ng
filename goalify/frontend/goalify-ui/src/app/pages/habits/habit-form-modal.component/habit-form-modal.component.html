@@ -15,27 +15,27 @@
           <p class="text-sm text-ink">{{ error }}</p>
         }
         <div>
-          <p class="text-sm text-muted mb-2">Goal</p>
-          <select formControlName="goalId" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200">
-            @if (goals.length === 0){
-              <option value="">No goals yet</option>
-            } @else {
-              @for (g of goals; track g.id) {
-                <option [value]="g.id">{{ g.name }}</option>
-              }
-            }
-          </select>
-          @if (form.get('goalId')?.invalid && form.get('goalId')?.touched) {
-            <p class="text-xs text-muted mt-1.5">Goal is required</p>
-          }
-        </div>
-        <div>
           <p class="text-sm text-muted mb-2">Name</p>
           <input formControlName="name" type="text" placeholder="Name" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink placeholder:text-muted focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" />
           @if (form.get('name')?.invalid && form.get('name')?.touched) {
             <p class="text-xs text-muted mt-1.5">Name is required</p>
           }
         </div>
+        <div>
+            <p class="text-sm text-muted mb-2">Goal Related</p>
+            <select formControlName="goalId" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200">
+              @if (goals.length === 0){
+                <option value="">No goals yet</option>
+              } @else {
+                @for (g of goals; track g.id) {
+                  <option [value]="g.id">{{ g.name }}</option>
+                }
+              }
+            </select>
+            @if (form.get('goalId')?.invalid && form.get('goalId')?.touched) {
+              <p class="text-xs text-muted mt-1.5">Goal is required</p>
+            }
+          </div>
         <div>
           <p class="text-sm text-muted mb-2">Effort (1–10)</p>
           <input formControlName="effortPoint" type="number" min="1" max="10" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" />
@@ -52,8 +52,24 @@
           <input formControlName="scheduledTime" type="time" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" />
         </div>
         <div>
-          <p class="text-sm text-muted mb-2">Emoji (optional)</p>
-          <input formControlName="emoji" type="text" placeholder="e.g. emojihappy" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink placeholder:text-muted focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" />
+          <p class="text-sm text-muted mb-2">Emoji</p>
+          <button
+            type="button"
+            (click)="emojiPickerOpen = !emojiPickerOpen"
+            class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-left text-ink flex items-center gap-2 focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200"
+          >
+            <span class="text-xl">{{ form.get('emoji')?.value || '😊' }}</span>
+            <span class="text-muted">{{ form.get('emoji')?.value ? '' : 'Choisir un emoji' }}</span>
+          </button>
+        
+          @if (emojiPickerOpen) {
+            <div class="relative mt-2">
+              <emoji-mart
+                title="choose an emoji"
+                (emojiSelect)="onEmojiSelect($event)"
+              ></emoji-mart>
+            </div>
+          }
         </div>
         <div>
           <p class="text-sm text-muted mb-2">Recurrence (days)</p>

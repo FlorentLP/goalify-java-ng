@@ -2,10 +2,11 @@ import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, sign
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CreateHabitRequest, HabitResponse } from '../../../habits/habits.model';
 import { GoalResponse } from '../../../goals/goals.model';
+import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 
 @Component({
   selector: 'app-habit-form-modal',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, PickerComponent],
   templateUrl: './habit-form-modal.component.html',
   standalone: true,
   styles: []
@@ -26,7 +27,7 @@ export class HabitFormModalComponent implements OnChanges {
   submitting = false;
   error: string | null = null;
   confirmingDelete = false;
-
+  emojiPickerOpen = false;
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -121,5 +122,10 @@ export class HabitFormModalComponent implements OnChanges {
   
   onCancelDelete(): void {
     this.confirmingDelete = false;
+  }
+
+  onEmojiSelect(event: { emoji: { native: string } }): void {
+    this.form.patchValue({ emoji: event.emoji.native });
+    this.emojiPickerOpen = false;
   }
 }
