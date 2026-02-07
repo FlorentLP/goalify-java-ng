@@ -9,33 +9,82 @@
       </button>
     </div>
 
-    <form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="flex flex-1 min-h-0 flex flex-col">
-      <div class="flex-1 p-4 flex flex-col gap-3 min-w-0 overflow-y-auto">
+    <form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="flex flex-1 min-h-0 flex-col relative">
+      <div class="flex-1 p-4 flex flex-col gap-3 min-w-0 overflow-y-auto relative">
         @if (error) {
           <p class="text-sm text-ink">{{ error }}</p>
         }
-        <div>
-          <p class="text-sm text-muted mb-2">Name</p>
-          <input formControlName="name" type="text" placeholder="Name" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink placeholder:text-muted focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" />
-          @if (form.get('name')?.invalid && form.get('name')?.touched) {
-            <p class="text-xs text-muted mt-1.5">Name is required</p>
-          }
-        </div>
-        <div>
-            <p class="text-sm text-muted mb-2">Goal Related</p>
-            <select formControlName="goalId" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200">
-              @if (goals.length === 0){
-                <option value="">No goals yet</option>
-              } @else {
-                @for (g of goals; track g.id) {
-                  <option [value]="g.id">{{ g.name }}</option>
-                }
-              }
-            </select>
-            @if (form.get('goalId')?.invalid && form.get('goalId')?.touched) {
-              <p class="text-xs text-muted mt-1.5">Goal is required</p>
+
+        <!-- Ligne 1: emoji (carré) + name -->
+        <div class="flex items-stretch gap-3">
+          <button
+            type="button"
+            (click)="emojiPickerOpen = !emojiPickerOpen"
+            class="shrink-0 w-11 h-11 rounded-xl border border-border bg-surface flex items-center justify-center text-2xl focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200 hover:bg-surface-alt"
+            aria-label="Choisir un emoji"
+          >
+            {{ form.get('emoji')?.value || '😊' }}
+          </button>
+          <div class="flex-1 min-w-0 flex flex-col">
+            <input formControlName="name" type="text" placeholder="Name" class="w-full h-11 rounded-xl border border-border bg-surface px-4 py-2.5 text-ink placeholder:text-muted focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" />
+            @if (form.get('name')?.invalid && form.get('name')?.touched) {
+              <p class="text-xs text-muted mt-1.5">Name is required</p>
             }
           </div>
+        </div>
+        @if (emojiPickerOpen) {
+          <div class="absolute left-4 right-4 top-14 z-20 rounded-xl border border-border bg-surface-alt shadow-warm-md overflow-hidden">
+            <emoji-mart
+              title="choose an emoji"
+              (emojiSelect)="onEmojiSelect($event)"
+            ></emoji-mart>
+          </div>
+        }
+
+        <!-- Ligne 2: scheduled time (gauche) + recurrence badges (droite) -->
+        <div class="flex flex-col sm:flex-row sm:items-end gap-3 sm:gap-4">
+          <div class="sm:w-36 shrink-0">
+            <p class="text-sm text-muted mb-2">Scheduled time</p>
+            <input formControlName="scheduledTime" type="time" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" />
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm text-muted mb-2">Recurrence</p>
+            <div class="flex flex-wrap gap-2">
+              @for (day of recurrenceDays; track day.key) {
+                <button
+                  type="button"
+                  (click)="toggleRecurrence(day.key)"
+                  class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors duration-200 focus:ring-2 focus:ring-sage-soft focus:outline-none"
+                  [class.bg-lilac-soft]="form.get(day.key)?.value"
+                  [class.text-ink]="form.get(day.key)?.value"
+                  [class.border]="!form.get(day.key)?.value"
+                  [class.border-border]="!form.get(day.key)?.value"
+                  [class.bg-surface]="!form.get(day.key)?.value"
+                  [class.text-muted]="!form.get(day.key)?.value"
+                  [class.hover:bg-surface-alt]="!form.get(day.key)?.value"
+                >
+                  {{ day.label }}
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p class="text-sm text-muted mb-2">Goal Related</p>
+          <select formControlName="goalId" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200">
+            @if (goals.length === 0){
+              <option value="">No goals yet</option>
+            } @else {
+              @for (g of goals; track g.id) {
+                <option [value]="g.id">{{ g.name }}</option>
+              }
+            }
+          </select>
+          @if (form.get('goalId')?.invalid && form.get('goalId')?.touched) {
+            <p class="text-xs text-muted mt-1.5">Goal is required</p>
+          }
+        </div>
         <div>
           <p class="text-sm text-muted mb-2">Effort (1–10)</p>
           <input formControlName="effortPoint" type="number" min="1" max="10" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" />
@@ -46,63 +95,6 @@
         <div class="flex items-center gap-2">
           <input formControlName="hasData" type="checkbox" id="hasData" class="rounded border-border text-sage focus:ring-sage-soft" />
           <label for="hasData" class="text-sm text-ink">Track data</label>
-        </div>
-        <div>
-          <p class="text-sm text-muted mb-2">Scheduled time</p>
-          <input formControlName="scheduledTime" type="time" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" />
-        </div>
-        <div>
-          <p class="text-sm text-muted mb-2">Emoji</p>
-          <button
-            type="button"
-            (click)="emojiPickerOpen = !emojiPickerOpen"
-            class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-left text-ink flex items-center gap-2 focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200"
-          >
-            <span class="text-xl">{{ form.get('emoji')?.value || '😊' }}</span>
-            <span class="text-muted">{{ form.get('emoji')?.value ? '' : 'Choisir un emoji' }}</span>
-          </button>
-        
-          @if (emojiPickerOpen) {
-            <div class="relative mt-2">
-              <emoji-mart
-                title="choose an emoji"
-                (emojiSelect)="onEmojiSelect($event)"
-              ></emoji-mart>
-            </div>
-          }
-        </div>
-        <div>
-          <p class="text-sm text-muted mb-2">Recurrence (days)</p>
-          <div class="flex flex-wrap gap-3">
-            <label class="flex items-center gap-2">
-              <input type="checkbox" formControlName="recurrenceMonday" class="rounded border-border text-sage focus:ring-sage-soft" />
-              <span class="text-sm text-ink">Mon</span>
-            </label>
-            <label class="flex items-center gap-2">
-              <input type="checkbox" formControlName="recurrenceTuesday" class="rounded border-border text-sage focus:ring-sage-soft" />
-              <span class="text-sm text-ink">Tue</span>
-            </label>
-            <label class="flex items-center gap-2">
-              <input type="checkbox" formControlName="recurrenceWednesday" class="rounded border-border text-sage focus:ring-sage-soft" />
-              <span class="text-sm text-ink">Wed</span>
-            </label>
-            <label class="flex items-center gap-2">
-              <input type="checkbox" formControlName="recurrenceThursday" class="rounded border-border text-sage focus:ring-sage-soft" />
-              <span class="text-sm text-ink">Thu</span>
-            </label>
-            <label class="flex items-center gap-2">
-              <input type="checkbox" formControlName="recurrenceFriday" class="rounded border-border text-sage focus:ring-sage-soft" />
-              <span class="text-sm text-ink">Fri</span>
-            </label>
-            <label class="flex items-center gap-2">
-              <input type="checkbox" formControlName="recurrenceSaturday" class="rounded border-border text-sage focus:ring-sage-soft" />
-              <span class="text-sm text-ink">Sat</span>
-            </label>
-            <label class="flex items-center gap-2">
-              <input type="checkbox" formControlName="recurrenceSunday" class="rounded border-border text-sage focus:ring-sage-soft" />
-              <span class="text-sm text-ink">Sun</span>
-            </label>
-          </div>
         </div>
       </div>
 

@@ -128,4 +128,19 @@ export class HabitFormModalComponent implements OnChanges {
     this.form.patchValue({ emoji: event.emoji.native });
     this.emojiPickerOpen = false;
   }
+
+  readonly recurrenceDays: { key: keyof CreateHabitRequest; label: string }[] = [
+    { key: 'recurrenceMonday', label: 'Mon' },
+    { key: 'recurrenceTuesday', label: 'Tue' },
+    { key: 'recurrenceWednesday', label: 'Wed' },
+    { key: 'recurrenceThursday', label: 'Thu' },
+    { key: 'recurrenceFriday', label: 'Fri' },
+    { key: 'recurrenceSaturday', label: 'Sat' },
+    { key: 'recurrenceSunday', label: 'Sun' },
+  ];
+
+  toggleRecurrence(key: keyof CreateHabitRequest): void {
+    const ctrl = this.form.get(key);
+    if (ctrl) ctrl.setValue(!ctrl.value);
+  }
 }
