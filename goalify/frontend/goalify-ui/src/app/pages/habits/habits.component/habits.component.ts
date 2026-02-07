@@ -19,16 +19,16 @@ export class HabitsComponent implements OnInit {
 
   filterStatus = signal<HabitsFilterStatus>('MYDAY');
   habits = signal<HabitResponse[]>([])
-  loading = signal(true);
-  error = signal<string | null>(null);
+  habitsloading = signal(true);
+  habitsError = signal<string | null>(null);
 
   ngOnInit(){
     this.loadHabits();
   }
 
   loadHabits(){
-    this.loading.set(true);
-    this.error.set(null);
+    this.habitsloading.set(true);
+    this.habitsError.set(null);
     this.habitsService.getHabits().subscribe({
       next: (list) => {
         const sorted = [...list].sort((a, b) => {
@@ -37,11 +37,11 @@ export class HabitsComponent implements OnInit {
           return a.name.localeCompare(b.name);
         });
         this.habits.set(sorted);
-        this.loading.set(false);
+        this.habitsloading.set(false);
       },
       error: (err) =>{
-        this.error.set(err.error?.message ?? 'Error while loading the habits');
-        this.loading.set(false);
+        this.habitsError.set(err.error?.message ?? 'Error while loading the habits');
+        this.habitsloading.set(false);
       }
     });
   }

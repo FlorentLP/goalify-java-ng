@@ -14,7 +14,7 @@ import lombok.Setter;
 public class HabitResponseDto {
     private Long id;
 
-    private Long goal_id;
+    private Long goalId;
     
     private String name;
 
@@ -42,7 +42,7 @@ public class HabitResponseDto {
 
     public HabitResponseDto(Habit habit){
         this.id = habit.getId();
-        this.goal_id = habit.getGoal().getId();
+        this.goalId = habit.getGoal().getId();
         this.name = habit.getName();
         this.effortPoint = habit.getEffortPoint();
         this.hasData = habit.isHasData();

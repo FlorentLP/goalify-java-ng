@@ -1,14 +1,78 @@
-@if (habits().length === 0) {
-    <p class="text-muted text-[15px]">No habits yet</p>
-  }
-@else
-{
-    <ul class="grid gap-5 sm:grid-cols-3 lg:grid-cols-5">
+@if (habitsError()) {
+  <p class="text-muted text-[15px]">{{ habitsError() }}</p>
+}
+@else if (habits().length === 0) {
+  <p class="text-muted text-[15px]">No habits yet</p>
+}
+@else {
+  <ul class="flex flex-col gap-2">
     @for (habit of habits(); track habit.id) {
       <li>
-        {{habit.name}}
+        <button
+          type="button"
+          (click)="openEditModal(habit)"
+          class="w-full flex items-center gap-3 rounded-2xl border border-border bg-surface-alt px-4 py-3 text-left transition-all duration-200 hover:border-peach-soft hover:shadow-warm focus:outline-none focus:ring-2 focus:ring-sage-soft focus:ring-offset-2 focus:ring-offset-surface shadow-warm"
+        >
+          <span class="shrink-0 w-14 text-sm font-medium text-ink tabular-nums">{{ habit.scheduledTime }}</span>
+          <span class="shrink-0 w-2.5 h-2.5 rounded-full bg-sage-soft" aria-hidden="true"></span>
+          <span class="min-w-0 flex-1 truncate font-medium text-ink-strong text-[15px]">{{ habit.name }}</span>
+          <div class="flex shrink-0 gap-0.5">
+            <span class="inline-flex h-7 w-7 items-center justify-center rounded-lg text-xs font-medium transition-colors"
+              [class.bg-lilac-soft]="habit.recurrenceMonday"
+              [class.text-ink-strong]="habit.recurrenceMonday"
+              [class.bg-surface]="!habit.recurrenceMonday"
+              [class.text-muted]="!habit.recurrenceMonday">M</span>
+            <span class="inline-flex h-7 w-7 items-center justify-center rounded-lg text-xs font-medium transition-colors"
+              [class.bg-lilac-soft]="habit.recurrenceTuesday"
+              [class.text-ink-strong]="habit.recurrenceTuesday"
+              [class.bg-surface]="!habit.recurrenceTuesday"
+              [class.text-muted]="!habit.recurrenceTuesday">T</span>
+            <span class="inline-flex h-7 w-7 items-center justify-center rounded-lg text-xs font-medium transition-colors"
+              [class.bg-lilac-soft]="habit.recurrenceWednesday"
+              [class.text-ink-strong]="habit.recurrenceWednesday"
+              [class.bg-surface]="!habit.recurrenceWednesday"
+              [class.text-muted]="!habit.recurrenceWednesday">W</span>
+            <span class="inline-flex h-7 w-7 items-center justify-center rounded-lg text-xs font-medium transition-colors"
+              [class.bg-lilac-soft]="habit.recurrenceThursday"
+              [class.text-ink-strong]="habit.recurrenceThursday"
+              [class.bg-surface]="!habit.recurrenceThursday"
+              [class.text-muted]="!habit.recurrenceThursday">T</span>
+            <span class="inline-flex h-7 w-7 items-center justify-center rounded-lg text-xs font-medium transition-colors"
+              [class.bg-lilac-soft]="habit.recurrenceFriday"
+              [class.text-ink-strong]="habit.recurrenceFriday"
+              [class.bg-surface]="!habit.recurrenceFriday"
+              [class.text-muted]="!habit.recurrenceFriday">F</span>
+            <span class="inline-flex h-7 w-7 items-center justify-center rounded-lg text-xs font-medium transition-colors"
+              [class.bg-lilac-soft]="habit.recurrenceSaturday"
+              [class.text-ink-strong]="habit.recurrenceSaturday"
+              [class.bg-surface]="!habit.recurrenceSaturday"
+              [class.text-muted]="!habit.recurrenceSaturday">S</span>
+            <span class="inline-flex h-7 w-7 items-center justify-center rounded-lg text-xs font-medium transition-colors"
+              [class.bg-lilac-soft]="habit.recurrenceSunday"
+              [class.text-ink-strong]="habit.recurrenceSunday"
+              [class.bg-surface]="!habit.recurrenceSunday"
+              [class.text-muted]="!habit.recurrenceSunday">S</span>
+          </div>
+          <span class="shrink-0 max-w-[140px] truncate text-sm text-muted">
+            @for (g of goals(); track g.id) {
+              @if (g.id === habit.goalId) {
+                {{ g.name }}
+              }
+            }
+          </span>
+        </button>
       </li>
     }
-    </ul>
+  </ul>
+}
+@if (modalOpen()) {
+  <app-habit-form-modal
+    [mode]="modalOpen()!"
+    [habit]="habitToEdit()"
+    [goals]="goals()"
+    (close)="closeModal()"
+    (saved)="onModalSaved($event)"
+    (delete)="onDelete($event)"
+  />
 }
 <app-add-fab (addClick)="openCreateModal()" />

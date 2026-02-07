@@ -3,15 +3,17 @@
     type="habits"
     [selectedValue]="filterStatus()"
     (valueChange)="setFilter($event)" />
-    @if (error()) {
-        <div class="rounded-xl border border-border bg-surface-alt text-ink px-4 py-3 text-sm">{{ error() }}</div>
+    @if (habitsError()) {
+        <div class="rounded-xl border border-border bg-surface-alt text-ink px-4 py-3 text-sm">{{ habitsError() }}</div>
     }
-    @if (loading()) {
+    @if (habitsloading()) {
         <p class="text-muted text-[15px]">Loading...</p>
     }
     @if(filterStatus() === 'MYDAY'){
         <app-habits-myday-view
         [habits]="habits()"
+
+
         />
     }
     @if(filterStatus() === 'MYWEEK'){
@@ -22,6 +24,8 @@
     @if(filterStatus() === 'MANAGE'){
         <app-habits-manage-view
         [habits]="habits()"
+        [habitsError]="habitsError()"
+        (loadHabits)="loadHabits()"
         />
     }
 </div>

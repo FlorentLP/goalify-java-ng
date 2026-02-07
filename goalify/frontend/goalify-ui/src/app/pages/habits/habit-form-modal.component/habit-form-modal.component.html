@@ -20,7 +20,7 @@
             @if (goals.length === 0){
               <option value="">No goals yet</option>
             } @else {
-              @for (g of goals(); track g.id) {
+              @for (g of goals; track g.id) {
                 <option [value]="g.id">{{ g.name }}</option>
               }
             }
