@@ -9,13 +9,16 @@
       </button>
     </div>
 
-    <form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="flex flex-1 min-h-0 flex-col relative">
-      <div class="flex-1 p-4 flex flex-col gap-3 min-w-0 overflow-y-auto relative">
+    <form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="flex flex-1 min-h-0 flex-col relative p-5">
+      <div
+          class="flex-1 flex flex-col gap-3 min-w-0 relative p-1"
+          [class.overflow-y-auto]="!emojiPickerOpen"
+          [class.overflow-hidden]="emojiPickerOpen"
+        >
         @if (error) {
           <p class="text-sm text-ink">{{ error }}</p>
         }
 
-        <!-- Ligne 1: emoji (carré) + name -->
         <div class="flex items-stretch gap-3">
           <button
             type="button"
@@ -32,32 +35,22 @@
             }
           </div>
         </div>
-        @if (emojiPickerOpen) {
-          <div class="absolute left-4 right-4 top-14 z-20 rounded-xl border border-border bg-surface-alt shadow-warm-md overflow-hidden">
-            <emoji-mart
-              title="choose an emoji"
-              (emojiSelect)="onEmojiSelect($event)"
-            ></emoji-mart>
-          </div>
-        }
-
-        <!-- Ligne 2: scheduled time (gauche) + recurrence badges (droite) -->
-        <div class="flex flex-col sm:flex-row sm:items-end gap-3 sm:gap-4">
+        <div class="flex flex-col sm:flex-row gap-3 sm:gap-15">
           <div class="sm:w-36 shrink-0">
             <p class="text-sm text-muted mb-2">Scheduled time</p>
-            <input formControlName="scheduledTime" type="time" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" />
+            <input formControlName="scheduledTime" type="time" class="w-full rounded-xl border border-border bg-surface px-4 py-1 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" />
           </div>
           <div class="flex-1 min-w-0">
             <p class="text-sm text-muted mb-2">Recurrence</p>
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-2 justify-between">
               @for (day of recurrenceDays; track day.key) {
                 <button
                   type="button"
                   (click)="toggleRecurrence(day.key)"
-                  class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors duration-200 focus:ring-2 focus:ring-sage-soft focus:outline-none"
+                  class="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors duration-200 focus:ring-2 focus:ring-sage-soft focus:outline-none border"
                   [class.bg-lilac-soft]="form.get(day.key)?.value"
                   [class.text-ink]="form.get(day.key)?.value"
-                  [class.border]="!form.get(day.key)?.value"
+                  [class.border-transparent]="form.get(day.key)?.value"
                   [class.border-border]="!form.get(day.key)?.value"
                   [class.bg-surface]="!form.get(day.key)?.value"
                   [class.text-muted]="!form.get(day.key)?.value"
@@ -70,31 +63,51 @@
           </div>
         </div>
 
-        <div>
-          <p class="text-sm text-muted mb-2">Goal Related</p>
-          <select formControlName="goalId" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200">
-            @if (goals.length === 0){
-              <option value="">No goals yet</option>
-            } @else {
-              @for (g of goals; track g.id) {
-                <option [value]="g.id">{{ g.name }}</option>
-              }
+        <div class="flex flex-col sm:flex-row sm:items-end gap-3 sm:gap-4">
+          <div class="sm:w-24 shrink-0">
+            <p class="text-sm text-muted mb-2">Effort (1–10)</p>
+            <input formControlName="effortPoint" type="number" min="1" max="10" class="w-full rounded-xl border border-border bg-surface px-4 py-2 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" />
+            @if (form.get('effortPoint')?.invalid && form.get('effortPoint')?.touched) {
+              <p class="text-xs text-muted mt-1.5">Between 1 and 10</p>
             }
-          </select>
-          @if (form.get('goalId')?.invalid && form.get('goalId')?.touched) {
-            <p class="text-xs text-muted mt-1.5">Goal is required</p>
-          }
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm text-muted mb-2">Goal Related</p>
+            <select formControlName="goalId" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200">
+              @if (goals.length === 0){
+                <option value="">No goals yet</option>
+              } @else {
+                @for (g of goals; track g.id) {
+                  <option [value]="g.id">{{ g.name }}</option>
+                }
+              }
+            </select>
+            @if (form.get('goalId')?.invalid && form.get('goalId')?.touched) {
+              <p class="text-xs text-muted mt-1.5">Goal is required</p>
+            }
+          </div>
         </div>
         <div>
-          <p class="text-sm text-muted mb-2">Effort (1–10)</p>
-          <input formControlName="effortPoint" type="number" min="1" max="10" class="w-full rounded-xl border border-border bg-surface px-4 py-2.5 text-ink focus:ring-2 focus:ring-sage-soft focus:border-sage-soft focus:outline-none transition-colors duration-200" />
-          @if (form.get('effortPoint')?.invalid && form.get('effortPoint')?.touched) {
-            <p class="text-xs text-muted mt-1.5">Between 1 and 10</p>
-          }
-        </div>
-        <div class="flex items-center gap-2">
-          <input formControlName="hasData" type="checkbox" id="hasData" class="rounded border-border text-sage focus:ring-sage-soft" />
-          <label for="hasData" class="text-sm text-ink">Track data</label>
+          <p class="text-sm text-muted mb-2">Track data</p>
+          <button
+            type="button"
+            (click)="form.get('hasData')?.setValue(!form.get('hasData')?.value)"
+            class="inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors duration-200 focus:ring-2 focus:ring-sage-soft focus:outline-none"
+            [class.border-lilac]="form.get('hasData')?.value"
+            [class.bg-lilac-soft]="form.get('hasData')?.value"
+            [class.text-ink-strong]="form.get('hasData')?.value"
+            [class.border-border]="!form.get('hasData')?.value"
+            [class.bg-surface]="!form.get('hasData')?.value"
+            [class.text-muted]="!form.get('hasData')?.value"
+            [class.hover:bg-surface-alt]="!form.get('hasData')?.value"
+          >
+            @if (form.get('hasData')?.value) {
+              <svg class="w-4 h-4 text-lilac" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+            }
+            {{ form.get('hasData')?.value ? 'Tracking data' : 'No data tracking' }}
+          </button>
         </div>
       </div>
 
@@ -125,6 +138,27 @@
           {{ submitLabel }}
         </button>
       </div>
+
+      @if (emojiPickerOpen) {
+        <div class="absolute inset-0 z-30 flex items-start justify-start pt-14 pl-6">
+          <div
+            class="absolute inset-0 bg-ink-strong/10"
+            (click)="emojiPickerOpen = false"
+            aria-hidden="true"
+          ></div>
+          <div
+            class="relative z-10 max-h-[500px] max-w-[353px] rounded-xl border border-border bg-surface-alt shadow-warm-md overflow-hidden"
+            (click)="$event.stopPropagation()"
+          >
+            <emoji-mart
+              [darkMode]="false"
+              [showPreview]="false"
+              title="choose an emoji"
+              (emojiSelect)="onEmojiSelect($event)"
+            ></emoji-mart>
+          </div>
+        </div>
+      }
     </form>
   </div>
 </div>

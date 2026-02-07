@@ -11,11 +11,11 @@
         <button
           type="button"
           (click)="openEditModal(habit)"
-          class="w-full flex items-center gap-3 rounded-2xl border border-border bg-surface-alt px-4 py-3 text-left transition-all duration-200 hover:border-peach-soft hover:shadow-warm focus:outline-none focus:ring-2 focus:ring-sage-soft focus:ring-offset-2 focus:ring-offset-surface shadow-warm"
+          class="w-full flex items-center gap-3 rounded-2xl border border-border border-l-6 bg-surface-alt px-4 py-3 text-left transition-all duration-200 hover:border-peach-soft hover:shadow-warm focus:outline-none focus:ring-2 focus:ring-sage-soft focus:ring-offset-2 focus:ring-offset-surface shadow-warm"
+          [style.border-left-color]="getCategoryColor(habit)"
         >
-          <span class="shrink-0 w-14 text-sm font-medium text-ink tabular-nums">{{ habit.scheduledTime?.slice(0, 5) }}</span>          
-          <span class="shrink-0 w-2.5 h-2.5 rounded-full bg-sage-soft" aria-hidden="true"></span>
-          <span class="min-w-0 flex-1 truncate font-medium text-ink-strong text-[15px]">{{ habit.name }}</span>
+          <span class="shrink-0 w-10 text-sm font-medium text-ink tabular-nums">{{ habit.scheduledTime?.slice(0, 5) }}</span>
+          <span class="shrink-0 w-10 h-8 flex items-center justify-center rounded-2xl border border-border bg-surface text-lg" aria-hidden="true">{{ habit.emoji || '😊' }}</span>          <span class="min-w-0 flex-1 truncate font-medium text-ink-strong text-[15px]">{{ habit.name }}</span>
           <span class="shrink-0 max-w-[140px] truncate text-sm text-muted">
             @for (g of goals(); track g.id) {
               @if (g.id === habit.goalId) {

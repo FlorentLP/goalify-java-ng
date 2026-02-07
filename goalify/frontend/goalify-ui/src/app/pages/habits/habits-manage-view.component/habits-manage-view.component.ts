@@ -1,7 +1,7 @@
 import { Component, inject, input, OnInit, output, signal } from '@angular/core';
 import { CreateHabitRequest, HabitResponse } from '../../../habits/habits.model';
 import { AddFabComponent } from '../../../core/add-fab.component/add-fab.component';
-import { GoalResponse } from '../../../goals/goals.model';
+import { GoalCategory, GoalResponse } from '../../../goals/goals.model';
 import { GoalsService } from '../../../goals/goals.service';
 import { HabitsService } from '../../../habits/habits.service';
 import { HabitFormModalComponent } from '../habit-form-modal.component/habit-form-modal.component';
@@ -91,5 +91,20 @@ export class HabitsManageViewComponent implements OnInit{
         this.loadHabits.emit();
       },
       error: (err) => this.modalError.set(err.error?.message ?? 'Delete failed')    });
+  }
+
+  private readonly categoryColors: Record<GoalCategory, string> = {
+    HEALTH: '#b8c9ac',
+    SOCIAL: '#a8b8c8',
+    INTELLECT: '#c4b8d4',
+    AESTHETIC: '#e0b8b8',
+    MINDSET: '#e0b8a8',
+    OTHER: '#c4b8a8',
+  };
+  
+  getCategoryColor(habit: HabitResponse): string {
+    const goal = this.goals().find((g) => g.id === habit.goalId);
+    if (!goal) return this.categoryColors['OTHER'];
+    return this.categoryColors[goal.goalCategory] ?? this.categoryColors['OTHER'];
   }
 }
